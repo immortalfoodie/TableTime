@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}TableTime - Restaurant Reservation System{% endblock %}</title>
-  <meta name="description" content="{% block meta_description %}Find restaurants, browse opening hours and available time slots, and reserve your dining table effortlessly with TableTime.{% endblock %}">
+  <title>{% block title %}TableTime Mumbai - Restaurant Reservation System{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Discover iconic Mumbai dining spots, check live slot capacities, and book your restaurant table instantly with TableTime Mumbai.{% endblock %}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -12,9 +12,9 @@
   <!-- Site Navigation Header -->
   <header class="site-header">
     <div class="nav-container">
-      <a href="{{ url_for('index') }}" class="brand-link" id="brand-logo" aria-label="TableTime Home">
-        <span class="brand-icon" aria-hidden="true">T</span>
-        <span>TableTime</span>
+      <a href="{{ url_for('index') }}" class="brand-link" id="brand-logo" aria-label="TableTime Mumbai Home">
+        <span class="brand-icon" aria-hidden="true">TT</span>
+        <span>TableTime <span style="font-size: 0.85rem; padding: 0.2rem 0.55rem; background-color: var(--color-accent-mint-light); color: #064e3b; border: var(--border-thin); border-radius: var(--radius-sm); vertical-align: middle; letter-spacing: 0.05em; font-weight: 900;">MUMBAI</span></span>
       </a>
 
       <nav aria-label="Main Navigation">
@@ -23,13 +23,13 @@
             <a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Home</a>
           </li>
           <li>
-            <a href="{{ url_for('restaurants') }}" class="nav-link {% if request.endpoint in ['restaurants', 'restaurant_details'] %}active{% endif %}" id="nav-restaurants-link">Browse Restaurants</a>
+            <a href="{{ url_for('restaurants') }}" class="nav-link {% if request.endpoint in ['restaurants', 'restaurant_details'] %}active{% endif %}" id="nav-restaurants-link">Mumbai Restaurants</a>
           </li>
           <li>
             <a href="{{ url_for('find_booking') }}" class="nav-link {% if request.endpoint == 'find_booking' %}active{% endif %}" id="nav-find-booking-link">Find My Booking</a>
           </li>
           <li>
-            <a href="{{ url_for('restaurants') }}" class="btn btn-primary nav-cta" id="nav-reserve-btn">Reserve a Table</a>
+            <a href="{{ url_for('restaurants') }}" class="btn btn-primary nav-cta" id="nav-reserve-btn">Book Table</a>
           </li>
         </ul>
       </nav>
@@ -54,10 +54,10 @@
 
     {% if error_title %}
       <!-- Generic Error View -->
-      <section class="card" style="text-align: center; max-width: 550px; margin: 3rem auto;">
-        <h1 style="color: var(--color-error-text); margin-bottom: 0.5rem;">{{ error_title }}</h1>
-        <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;">{{ error_message }}</p>
-        <a href="{{ url_for('index') }}" class="btn btn-primary">Return to Home</a>
+      <section class="card" style="text-align: center; max-width: 580px; margin: 3rem auto; background-color: var(--color-lavender-light);">
+        <h1 style="color: var(--color-black); font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; text-transform: uppercase;">{{ error_title }}</h1>
+        <p style="color: var(--color-text-muted); font-size: 1.05rem; font-weight: 600; margin-bottom: 1.5rem;">{{ error_message }}</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">Return to Home &rarr;</a>
       </section>
     {% else %}
       {% block content %}{% endblock %}
@@ -69,11 +69,11 @@
   <footer class="site-footer">
     <div class="footer-container">
       <div>
-        <p><strong>TableTime</strong> &mdash; Restaurant Reservation System</p>
-        <p>Third-Year BE Artificial Intelligence and Data Science &bull; Software Engineering Mini-Project</p>
+        <p><strong style="font-size: 1.1rem; text-transform: uppercase;">TableTime Mumbai</strong> &bull; Iconic Restaurant Reservation System</p>
+        <p style="font-weight: 600;">Third-Year BE Artificial Intelligence & Data Science &bull; Software Engineering Mini-Project</p>
       </div>
       <div>
-        <p>Running locally on Flask &bull; SQLite Database &bull; Clean Architecture</p>
+        <p style="font-weight: 800;">⚡ Transaction-Safe Concurrency &bull; SQLite &bull; Python Flask</p>
       </div>
     </div>
   </footer>

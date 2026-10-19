@@ -1,11 +1,11 @@
 # Software Testing Documentation & Test Cases
-## Restaurant Reservation System &mdash; TableTime
+## Restaurant Reservation System &mdash; TableTime Mumbai
 
 **Academic Course:** Third-Year BE Artificial Intelligence and Data Science  
 **Subject:** Software Engineering Mini-Project  
 **Testing Framework:** Python `unittest` & `pytest`  
 **Execution Environment:** Python 3.12.10 on Windows (Local SQLite)  
-**Execution Date:** October 19, 2026  
+**Execution Date:** October 2026  
 **Total Test Cases:** 10 | **Passed:** 10 | **Failed:** 0 | **Pending:** 0  
 
 ---
@@ -13,9 +13,9 @@
 ## 1. Test Strategy & Overview
 
 The test suite is located in [`tests/test_app.py`](../tests/test_app.py) and executes against an isolated, temporary SQLite database to ensure idempotency and test independence. The suite validates:
-1. End-to-end user navigation flows (browsing, searching, reservation creation, confirmation receipt, lookup, and cancellation).
+1. End-to-end user navigation flows (browsing, searching, reservation creation, confirmation pass receipt, lookup, and cancellation).
 2. Server-side validation rules (mandatory fields, email syntax, negative party sizes, past dates).
-3. Transactional concurrency control (enforcing slot capacities and rolling back overbooked attempts).
+3. Transactional concurrency control (enforcing slot capacities via `BEGIN IMMEDIATE` and rolling back overbooked attempts).
 4. Data persistence across connection closures and application restarts.
 
 ---
@@ -24,15 +24,15 @@ The test suite is located in [`tests/test_app.py`](../tests/test_app.py) and exe
 
 | Test ID | Module / Feature | Test Condition | Expected Result | Actual Result | Status |
 | :---: | :--- | :--- | :--- | :--- | :---: |
-| **TC-01** | Restaurant Discovery | Load restaurant listing page (`GET /restaurants`) | HTTP 200, renders all seeded sample restaurants. | HTTP 200 returned, page rendered "The Spice Pavilion", "Bella Trattoria", etc. | **PASS** |
-| **TC-02** | Search & Filtering | Search by name `?search=Spice` & filter by cuisine `?cuisine=Italian` | Correct subset of restaurants returned without false matches. | Returned only matching restaurants ("The Spice Pavilion" for search; "Bella Trattoria" for cuisine). | **PASS** |
+| **TC-01** | Restaurant Discovery | Load restaurant listing page (`GET /restaurants`) | HTTP 200, renders seeded Mumbai restaurants (The Bombay Canteen, Trishna, Bastian). | HTTP 200 returned, page rendered "The Bombay Canteen", "Trishna", "Bastian", etc. | **PASS** |
+| **TC-02** | Search & Filtering | Search by name `?search=Canteen` & filter by cuisine `?cuisine=Coastal` | Correct subset of restaurants returned without false matches. | Returned only matching restaurants ("The Bombay Canteen" for search; "Trishna" for Coastal cuisine). | **PASS** |
 | **TC-03** | Reservation Creation | Submit valid booking form (`POST /book/1`) | HTTP 302 redirect to `/confirmation/TT-...`, record stored in SQLite with status `Confirmed`. | Redirected to confirmation URL with generated booking reference, record confirmed in database. | **PASS** |
 | **TC-04** | Form Validation (Required Fields) | Submit booking form with empty customer name or email | Form submission rejected, error flash message displayed, 0 records added to SQLite. | HTTP 200 returned with "Customer name is required" alert; database row count remained 0. | **PASS** |
 | **TC-05** | Form Validation (Past Date) | Submit booking with reservation date in the past | Past date rejected with explicit user-friendly error message. | HTTP 200 returned with "Reservation date cannot be in the past" alert; database unchanged. | **PASS** |
 | **TC-06** | Booking Lookup (Positive) | Look up booking using valid reference and matching customer email (`POST /find-booking`) | Displays full reservation summary with status `Confirmed` and cancellation trigger. | Found record displayed reference, customer name, date, time, and active cancellation button. | **PASS** |
 | **TC-07** | Booking Lookup (Negative) | Look up booking with nonexistent reference or wrong email | Error message displayed; no private details exposed. | Displayed "No matching reservation found. Please check your booking reference and email address." | **PASS** |
 | **TC-08** | Reservation Cancellation | Cancel an active confirmed reservation (`POST /cancel-booking/<ref>`) | Status updated to `Cancelled` in SQLite; capacity released. | Success message displayed; status changed to `Cancelled` in database. | **PASS** |
-| **TC-09** | Concurrency & Capacity Limits | Attempt to book more seats than available for a specific time slot | Transaction rolls back, overbooking blocked, capacity error displayed. | Rejected with "Insufficient capacity... Only 2 seat(s) remaining for this time slot"; 0 overbooked rows inserted. | **PASS** |
+| **TC-09** | Concurrency & Capacity Limits | Attempt to book more seats than available for a specific time slot at Cafe Madras | Transaction rolls back, overbooking blocked, capacity error displayed. | Rejected with "Insufficient capacity... Only 2 seat(s) remaining for this time slot"; 0 overbooked rows inserted. | **PASS** |
 | **TC-10** | Database Persistence | Access created reservation after closing and reopening SQLite connection | Reservation record persists completely with all original attributes. | Fresh connection successfully retrieved reservation record with status `Confirmed`. | **PASS** |
 
 ---
@@ -43,15 +43,15 @@ The test suite is located in [`tests/test_app.py`](../tests/test_app.py) and exe
 - **Test Condition:** Verify catalog availability for public users.
 - **Input / Steps:** Send `GET /restaurants`.
 - **Expected Outcome:** HTTP 200 status code; HTML contains "Browse Restaurants" heading and at least 5 restaurant cards.
-- **Actual Outcome:** HTTP 200; 6 sample restaurants displayed with cuisines, operational hours, and capacities.
+- **Actual Outcome:** HTTP 200; 8 Mumbai restaurants displayed with cuisines, operational hours, and capacities.
 - **Pass / Fail:** **PASS**
 
 ### Test Case TC-02: Restaurant Search and Filtering
 - **Test Condition:** Query parameter filtering on restaurant name and cuisine.
 - **Input / Steps:**
-  1. `GET /restaurants?search=Spice`
-  2. `GET /restaurants?cuisine=Italian`
-- **Expected Outcome:** Step 1 matches only "The Spice Pavilion"; Step 2 matches only "Bella Trattoria".
+  1. `GET /restaurants?search=Canteen`
+  2. `GET /restaurants?cuisine=Coastal`
+- **Expected Outcome:** Step 1 matches only "The Bombay Canteen"; Step 2 matches only "Trishna".
 - **Actual Outcome:** Accurate filtering; non-matching restaurants excluded.
 - **Pass / Fail:** **PASS**
 
@@ -99,7 +99,7 @@ The test suite is located in [`tests/test_app.py`](../tests/test_app.py) and exe
 
 ### Test Case TC-09: Over-Capacity / Slot Full Rejection
 - **Test Condition:** Prevention of overbooking via database transaction locking (`BEGIN IMMEDIATE`).
-- **Input / Steps:** Reserve `capacity - 2` seats at Urban Green Cafe (Capacity: 24). Then submit request for 5 seats for the same date and time.
+- **Input / Steps:** Reserve `capacity - 2` seats at Cafe Madras (Capacity: 32). Then submit request for 5 seats for the same date and time.
 - **Expected Outcome:** Second request rejected; error "Insufficient capacity... Only 2 seat(s) remaining"; transaction rolled back.
 - **Actual Outcome:** Error message displayed; overbooked record rejected; database preserved integrity.
 - **Pass / Fail:** **PASS**
@@ -131,5 +131,5 @@ tests/test_app.py::TableTimeTestCase::test_08_reservation_cancellation_updates_s
 tests/test_app.py::TableTimeTestCase::test_09_over_capacity_booking_rejected PASSED [ 90%]
 tests/test_app.py::TableTimeTestCase::test_10_data_persistence_across_restart PASSED [100%]
 
-============================= 10 passed in 3.87s ==============================
+============================= 10 passed in 1.65s ==============================
 ```

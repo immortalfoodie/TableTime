@@ -1,68 +1,88 @@
 """
-seed_data.py - Populates the TableTime database with realistic sample restaurant data.
+seed_data.py - Populates the TableTime database with famous iconic Mumbai restaurants.
 Idempotent execution: will not insert duplicate records if data already exists.
 """
 
 SAMPLE_RESTAURANTS = [
     {
-        "name": "The Spice Pavilion",
-        "cuisine": "North Indian & Mughlai",
-        "location": "Connaught Place, Central City",
-        "description": "Authentic royal Awadhi and Mughlai delicacies cooked in traditional clay tandoors. Renowned for slow-cooked biryanis and creamy gravies.",
-        "opening_time": "11:00",
+        "name": "The Bombay Canteen",
+        "cuisine": "Modern Regional Indian",
+        "location": "Kamala Mills, Lower Parel, Mumbai",
+        "description": "Celebrated culinary institution in a restored mill compound, renowned for reinventing diverse regional Indian flavors, iconic Eggs Kejriwal, and innovative craft cocktails.",
+        "opening_time": "12:00",
+        "closing_time": "23:30",
+        "price_range": "₹₹₹",
+        "capacity": 45
+    },
+    {
+        "name": "Trishna",
+        "cuisine": "Coastal Mangalorean & Seafood",
+        "location": "Kala Ghoda, Fort, South Mumbai",
+        "description": "Globally legendary seafood temple famous for signature butter pepper garlic crab, fresh jumbo prawns, koliwada fry, and soft neer dosas mopping up rich coastal gravies.",
+        "opening_time": "12:00",
         "closing_time": "23:00",
+        "price_range": "₹₹₹",
+        "capacity": 36
+    },
+    {
+        "name": "Leopold Cafe & Bar",
+        "cuisine": "Heritage Cafe & Continental",
+        "location": "Colaba Causeway, South Mumbai",
+        "description": "Established in 1871, Mumbai's most iconic and bustling cafe landmark. Famous for hearty chicken stroganoff, chilled draught towers, spicy chili chicken, and vintage atmosphere.",
+        "opening_time": "08:00",
+        "closing_time": "23:30",
+        "price_range": "₹₹",
+        "capacity": 50
+    },
+    {
+        "name": "Cafe Madras",
+        "cuisine": "South Indian & Udupi",
+        "location": "Kings Circle, Matunga, Mumbai",
+        "description": "Matunga's legendary breakfast stronghold serving melt-in-the-mouth butter idlis, crispy ghee podi dosas, piping hot filter kaapi, and flavorful bisibelebath since 1940.",
+        "opening_time": "07:00",
+        "closing_time": "21:30",
+        "price_range": "₹",
+        "capacity": 32
+    },
+    {
+        "name": "Khyber",
+        "cuisine": "North-West Frontier & Mughlai",
+        "location": "MG Road, Kala Ghoda, South Mumbai",
+        "description": "A regal Mughal-frontier palace adorned with authentic stonework and MF Husain murals. Renowned for slow-simmered Nalli Nihari, dal makhani, and clay-oven tandoori grills.",
+        "opening_time": "12:30",
+        "closing_time": "23:30",
         "price_range": "₹₹₹",
         "capacity": 40
     },
     {
-        "name": "Bella Trattoria",
-        "cuisine": "Italian & Mediterranean",
-        "location": "Indiranagar, Metro District",
-        "description": "Cozy, rustic Italian dining featuring wood-fired sourdough pizzas, hand-rolled artisanal pastas, and signature tiramisu.",
+        "name": "Bastian",
+        "cuisine": "Modern Asian & Gourmet Seafood",
+        "location": "Linking Road, Bandra West, Mumbai",
+        "description": "Bandra's high-energy, celebrity-favorite dining hotspot celebrated for its Singapore chili crab, lobster thermidor, avocado poke bowls, and signature decadent cheesecakes.",
         "opening_time": "12:00",
-        "closing_time": "22:30",
-        "price_range": "₹₹",
-        "capacity": 30
+        "closing_time": "23:30",
+        "price_range": "₹₹₹",
+        "capacity": 48
     },
     {
-        "name": "Golden Dragon Wok",
-        "cuisine": "Chinese & Pan-Asian",
-        "location": "Bandra West, Seaside Avenue",
-        "description": "Vibrant Pan-Asian kitchen offering steaming Cantonese dim sums, fiery Sichuan noodles, and wok-tossed specialties in a lively ambience.",
-        "opening_time": "12:30",
+        "name": "Pizza By The Bay",
+        "cuisine": "Gourmet Italian & Pizzas",
+        "location": "Marine Drive, Churchgate, Mumbai",
+        "description": "Prime art-deco oceanfront destination overlooking Marine Drive's Queen's Necklace. Serves artisanal thin-crust pizzas, comforting pastas, and sundowner coffee with sweeping Arabian Sea views.",
+        "opening_time": "11:00",
         "closing_time": "23:00",
         "price_range": "₹₹",
-        "capacity": 35
+        "capacity": 38
     },
     {
-        "name": "Urban Green Cafe",
-        "cuisine": "Cafe & Healthy Continental",
-        "location": "Koramangala, Tech Park Road",
-        "description": "A relaxed urban hangout serving specialty pour-over single-origin coffees, fresh sourdough toasts, nutritious grain bowls, and handcrafted smoothies.",
-        "opening_time": "09:00",
-        "closing_time": "21:00",
-        "price_range": "₹",
-        "capacity": 24
-    },
-    {
-        "name": "Coastline Seafood & Grill",
-        "cuisine": "Seafood & Coastal",
-        "location": "Marine Drive, Harbor Bay",
-        "description": "Premium seaside dining showcasing fresh daily catches, coastal coconut curries, grilled prawns, and sunset views over the water.",
-        "opening_time": "12:00",
-        "closing_time": "22:00",
-        "price_range": "₹₹₹",
-        "capacity": 28
-    },
-    {
-        "name": "Olive & Basil Bistro",
-        "cuisine": "Mediterranean & Greek",
-        "location": "Jubilee Hills, City Center",
-        "description": "Bright, sunlit bistro serving Mediterranean mezze platters, crisp Greek salads, wood-roasted meats, and refreshing herbed mocktails.",
+        "name": "Gajalee",
+        "cuisine": "Malvani & Maharashtrian Coastal",
+        "location": "Hanuman Road, Vile Parle East, Mumbai",
+        "description": "The benchmark for Konkan culinary mastery, acclaimed for rawa-fried Bombil (Bombay duck), spicy green masala stuffed pomfret, tandoori crab, and refreshing solkadhi.",
         "opening_time": "11:30",
         "closing_time": "22:30",
         "price_range": "₹₹",
-        "capacity": 32
+        "capacity": 35
     }
 ]
 
@@ -108,6 +128,6 @@ if __name__ == "__main__":
     added = seed_database(conn)
     conn.close()
     if added > 0:
-        print(f"Successfully seeded {added} sample restaurants.")
+        print(f"Successfully seeded {added} iconic Mumbai restaurants.")
     else:
         print("Database already contains restaurant data. No new records inserted.")

@@ -1,26 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Browse Restaurants - TableTime{% endblock %}
+{% block title %}Browse Mumbai Restaurants - TableTime{% endblock %}
 
 {% block content %}
 <section class="section-header">
   <div>
-    <h1 class="section-title">Browse Restaurants</h1>
-    <p class="section-subtitle">Discover culinary experiences, compare opening hours, and book available dining tables.</p>
+    <span class="sticker sticker-indigo" style="margin-bottom: 0.35rem;">8 ICONIC MUMBAI VENUES</span>
+    <h1 class="section-title">Browse Restaurants &mdash; Mumbai</h1>
+    <p class="section-subtitle">Discover culinary institutions across South Mumbai, Bandra, Lower Parel, and the suburbs.</p>
   </div>
 </section>
 
-<!-- Filter & Search Controls -->
+<!-- Neo-Brutalist Filter & Search Controls -->
 <section class="filter-bar" aria-label="Restaurant Filters">
   <form action="{{ url_for('restaurants') }}" method="GET" class="filter-form" role="search">
     <div class="form-group" style="flex: 2;">
-      <label for="search-input">Search Restaurant, Cuisine, or Location</label>
+      <label for="search-input">Search Restaurant, Cuisine, or Mumbai Locality</label>
       <input
         type="search"
         id="search-input"
         name="search"
         class="form-control"
-        placeholder="e.g. Spice, Italian, Bandra, Cafe..."
+        placeholder="Search by restaurant name, cuisine, or neighborhood..."
         value="{{ search_query }}"
       >
     </div>
@@ -35,10 +36,10 @@
       </select>
     </div>
 
-    <div style="display: flex; gap: 0.5rem; align-items: flex-end;">
+    <div style="display: flex; gap: 0.65rem; align-items: flex-end;">
       <button type="submit" class="btn btn-primary" id="filter-submit-btn">Apply Filters</button>
       {% if search_query or selected_cuisine %}
-        <a href="{{ url_for('restaurants') }}" class="btn btn-secondary" id="clear-filters-btn">Clear</a>
+        <a href="{{ url_for('restaurants') }}" class="btn btn-secondary" id="clear-filters-btn">Reset</a>
       {% endif %}
     </div>
   </form>
@@ -46,10 +47,10 @@
 
 <!-- Search Status Summary -->
 {% if search_query or selected_cuisine %}
-  <div style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--color-text-muted);">
+  <div style="margin-bottom: 1.5rem; font-size: 1.05rem; font-weight: 800; color: var(--color-black);">
     Showing results for
-    {% if search_query %}<strong>"{{ search_query }}"</strong>{% endif %}
-    {% if selected_cuisine %} in <em>{{ selected_cuisine }}</em>{% endif %}
+    {% if search_query %}<mark style="background-color: var(--color-primary-light); color: var(--color-primary); border: var(--border-thin); padding: 0.15rem 0.45rem; border-radius: var(--radius-sm);">"{{ search_query }}"</mark>{% endif %}
+    {% if selected_cuisine %} in <mark style="background-color: var(--color-accent-mint-light); color: #064e3b; border: var(--border-thin); padding: 0.15rem 0.45rem; border-radius: var(--radius-sm);">{{ selected_cuisine }}</mark>{% endif %}
     ({{ restaurants|length }} found)
   </div>
 {% endif %}
@@ -60,27 +61,26 @@
     {% for r in restaurants %}
       <article class="restaurant-card" aria-labelledby="rest-title-{{ r.id }}">
         <div class="card-top">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.4rem; gap: 0.5rem;">
             <h2 id="rest-title-{{ r.id }}" class="restaurant-name">{{ r.name }}</h2>
             <span class="badge badge-price" title="Price tier">{{ r.price_range }}</span>
           </div>
 
           <div class="restaurant-meta">
             <span class="badge badge-cuisine">{{ r.cuisine }}</span>
-            <span>&bull;</span>
-            <span>{{ r.location }}</span>
+            <span class="badge" style="background-color: var(--color-accent-sky-light); color: var(--color-ink);">📍 {{ r.location }}</span>
           </div>
 
           <p class="restaurant-description">{{ r.description }}</p>
 
           <ul class="restaurant-details-list">
             <li>
-              <strong>Operating Hours:</strong>
-              <span>{{ r.opening_time }} - {{ r.closing_time }}</span>
+              <strong>🕒 Operating Hours:</strong>
+              <span>{{ r.opening_time }} &ndash; {{ r.closing_time }}</span>
             </li>
             <li>
-              <strong>Total Capacity:</strong>
-              <span>{{ r.capacity }} guest seats</span>
+              <strong>🪑 Total Seating:</strong>
+              <span>{{ r.capacity }} guests max</span>
             </li>
           </ul>
         </div>
@@ -93,14 +93,14 @@
     {% endfor %}
   </div>
 {% else %}
-  <!-- Empty State -->
-  <div class="card" style="text-align: center; padding: 3rem 1.5rem; margin: 2rem 0;">
-    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;" aria-hidden="true">🔍</div>
-    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">No Restaurants Found</h3>
-    <p style="color: var(--color-text-muted); max-width: 480px; margin: 0 auto 1.5rem auto;">
-      We couldn't find any restaurants matching your search criteria. Try adjusting your keywords or clearing the cuisine filter.
+  <!-- Neo-Brutalist Empty State -->
+  <div class="card" style="text-align: center; padding: 3.5rem 1.5rem; margin: 2rem 0; background-color: var(--color-lavender-light);">
+    <div style="font-size: 3rem; margin-bottom: 0.75rem;" aria-hidden="true">📍</div>
+    <h3 style="font-size: 1.6rem; font-weight: 900; margin-bottom: 0.5rem; text-transform: uppercase;">No Mumbai Restaurants Found</h3>
+    <p style="font-size: 1.05rem; font-weight: 600; color: var(--color-text-muted); max-width: 520px; margin: 0 auto 1.5rem auto;">
+      We couldn't find any dining spots matching your search keywords or cuisine filter. Try searching for "Colaba", "Bandra", or "Coastal".
     </p>
-    <a href="{{ url_for('restaurants') }}" class="btn btn-primary">Reset Filters</a>
+    <a href="{{ url_for('restaurants') }}" class="btn btn-primary btn-lg">Reset All Filters</a>
   </div>
 {% endif %}
 

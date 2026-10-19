@@ -1,27 +1,36 @@
 {% extends "base.html" %}
 
-{% block title %}Reservation Confirmed: {{ reservation.booking_ref }} - TableTime{% endblock %}
+{% block title %}Reservation Confirmed: {{ reservation.booking_ref }} - TableTime Mumbai{% endblock %}
 
 {% block content %}
 <article class="receipt-card" aria-labelledby="confirmation-heading">
+  <!-- Retro Dining Pass Header -->
   <div class="confirmation-header">
     <div class="confirmation-icon" aria-hidden="true">&#10003;</div>
-    <h1 id="confirmation-heading" style="font-size: 1.75rem; font-weight: 800; color: var(--color-text-main); margin-bottom: 0.25rem;">
+    <span class="sticker sticker-indigo" style="margin-bottom: 0.5rem;">TABLETIME MUMBAI &bull; OFFICIAL DINING PASS</span>
+    <h1 id="confirmation-heading" style="font-size: 2.15rem; font-weight: 900; color: var(--color-black); margin: 0.35rem 0; text-transform: uppercase;">
       Reservation Confirmed!
     </h1>
-    <p style="color: var(--color-text-muted); font-size: 0.95rem;">
-      Your table has been reserved successfully. Please keep your booking reference handy.
+    <p style="color: var(--color-text-muted); font-size: 1rem; font-weight: 600;">
+      Your table has been secured. Show this booking reference upon arrival.
     </p>
 
     <!-- Booking Reference Code Box -->
     <div class="booking-ref-box">
       <div class="booking-ref-label">Booking Reference Code</div>
       <div class="booking-ref-code" id="confirmed-booking-ref">{{ reservation.booking_ref }}</div>
+      <div style="font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; margin-top: 0.35rem; color: #333;">
+        ||| |||| || ||||| |||| || |||
+      </div>
     </div>
   </div>
 
   <!-- Reservation Receipt Details Table -->
-  <h2 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;">Reservation Summary</h2>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+    <h2 style="font-size: 1.25rem; font-weight: 900; text-transform: uppercase;">Dining Summary</h2>
+    <span class="badge badge-success" style="font-size: 0.95rem; padding: 0.35rem 0.85rem;">{{ reservation.status }}</span>
+  </div>
+
   <table class="details-table">
     <tbody>
       <tr>
@@ -29,27 +38,27 @@
         <td><strong>{{ reservation.restaurant_name }}</strong></td>
       </tr>
       <tr>
-        <th scope="row">Cuisine & Tier</th>
-        <td>{{ reservation.cuisine }} ({{ reservation.price_range }})</td>
-      </tr>
-      <tr>
         <th scope="row">Location</th>
         <td>{{ reservation.location }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Cuisine & Tier</th>
+        <td>{{ reservation.cuisine }} ({{ reservation.price_range }})</td>
       </tr>
       <tr>
         <th scope="row">Date of Visit</th>
         <td><strong>{{ reservation.reservation_date }}</strong></td>
       </tr>
       <tr>
-        <th scope="row">Reserved Time</th>
+        <th scope="row">Dining Time</th>
         <td><strong>{{ reservation.reservation_time }}</strong></td>
       </tr>
       <tr>
-        <th scope="row">Number of Guests</th>
-        <td>{{ reservation.guest_count }} guests</td>
+        <th scope="row">Party Size</th>
+        <td><strong>{{ reservation.guest_count }} guests</strong></td>
       </tr>
       <tr>
-        <th scope="row">Primary Guest Name</th>
+        <th scope="row">Primary Guest</th>
         <td>{{ reservation.customer_name }}</td>
       </tr>
       <tr>
@@ -67,12 +76,6 @@
         </tr>
       {% endif %}
       <tr>
-        <th scope="row">Booking Status</th>
-        <td>
-          <span class="badge badge-success">{{ reservation.status }}</span>
-        </td>
-      </tr>
-      <tr>
         <th scope="row">Booked On</th>
         <td>{{ reservation.created_at }}</td>
       </tr>
@@ -80,20 +83,20 @@
   </table>
 
   <!-- Important Arrival Notice -->
-  <div style="background-color: var(--color-bg-subtle); border-radius: var(--radius-sm); padding: 1rem; margin: 1.5rem 0; font-size: 0.875rem; color: var(--color-text-muted);">
-    <strong>Arrival Guidelines:</strong> Please arrive 5&ndash;10 minutes before your reserved time. Tables are held for up to 15 minutes past the booking slot. If your plans change, you can manage or cancel your reservation via the <em>Find My Booking</em> page using your reference code and email.
+  <div style="background-color: var(--color-primary-light); border: var(--border-medium); border-color: var(--color-ink); border-radius: var(--radius-sm); padding: 1rem; margin: 1.5rem 0; font-size: 0.95rem; font-weight: 700; color: var(--color-ink); box-shadow: var(--shadow-sm);">
+    📌 <strong>MUMBAI DINING GUIDELINE:</strong> Tables are held for 15 minutes past your booked slot. If your schedule changes, you can view or cancel this booking via <em>Find My Booking</em> using your reference code and email.
   </div>
 
   <!-- Receipt Actions -->
-  <div class="no-print" style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+  <div class="no-print" style="display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap; margin-top: 1.75rem;">
     <button type="button" class="btn btn-secondary" onclick="window.print()" id="print-receipt-btn">
-      Print Receipt
+      🖨️ Print Pass
     </button>
     <a href="{{ url_for('find_booking', ref=reservation.booking_ref, email=reservation.email) }}" class="btn btn-secondary" id="manage-booking-btn">
-      Manage This Booking
+      Manage Booking
     </a>
     <a href="{{ url_for('restaurants') }}" class="btn btn-primary" id="return-restaurants-btn">
-      Browse More Restaurants
+      Explore More Mumbai Spots &rarr;
     </a>
   </div>
 </article>

@@ -62,26 +62,26 @@ class TableTimeTestCase(unittest.TestCase):
         response = self.client.get("/restaurants")
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Browse Restaurants", response.data)
-        self.assertIn(b"The Spice Pavilion", response.data)
-        self.assertIn(b"Bella Trattoria", response.data)
-        self.assertIn(b"Golden Dragon Wok", response.data)
+        self.assertIn(b"The Bombay Canteen", response.data)
+        self.assertIn(b"Trishna", response.data)
+        self.assertIn(b"Bastian", response.data)
 
     # -------------------------------------------------------------
     # Test 2: Restaurant search returns matching restaurants
     # -------------------------------------------------------------
     def test_02_restaurant_search_returns_matching(self):
         """Verify search filtering by name and cuisine returns matching restaurants only."""
-        # Search for 'Spice'
-        res = self.client.get("/restaurants?search=Spice")
+        # Search for 'Canteen'
+        res = self.client.get("/restaurants?search=Canteen")
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"The Spice Pavilion", res.data)
-        self.assertNotIn(b"Bella Trattoria", res.data)
+        self.assertIn(b"The Bombay Canteen", res.data)
+        self.assertNotIn(b"Trishna", res.data)
 
-        # Filter by cuisine 'Italian'
-        res_cuisine = self.client.get("/restaurants?cuisine=Italian")
+        # Filter by cuisine 'Coastal'
+        res_cuisine = self.client.get("/restaurants?cuisine=Coastal")
         self.assertEqual(res_cuisine.status_code, 200)
-        self.assertIn(b"Bella Trattoria", res_cuisine.data)
-        self.assertNotIn(b"Golden Dragon Wok", res_cuisine.data)
+        self.assertIn(b"Trishna", res_cuisine.data)
+        self.assertNotIn(b"Cafe Madras", res_cuisine.data)
 
     # -------------------------------------------------------------
     # Test 3: Valid reservation is created and stored
@@ -252,12 +252,12 @@ class TableTimeTestCase(unittest.TestCase):
         """Verify booking that exceeds restaurant capacity for a slot is rejected and transaction rolls back."""
         conn = get_db_connection(test_db_path)
         cursor = conn.cursor()
-        cursor.execute("SELECT id, capacity FROM restaurants WHERE name = 'Urban Green Cafe'")
+        cursor.execute("SELECT id, capacity FROM restaurants WHERE name = 'Cafe Madras'")
         rest = cursor.fetchone()
         conn.close()
 
         rest_id = rest["id"]
-        capacity = rest["capacity"]  # 24
+        capacity = rest["capacity"]  # 32
 
         tomorrow = (date.today() + timedelta(days=4)).isoformat()
         slot_time = "14:00"

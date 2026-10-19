@@ -1,20 +1,20 @@
-# TableTime: Restaurant Reservation System
+# TableTime Mumbai: Restaurant Reservation System
 
 > **Third-Year B.E. Artificial Intelligence and Data Science &mdash; Software Engineering Mini-Project**  
-> Built with **Python (Flask)**, **Jinja2**, **SQLite 3**, and **Semantic HTML5/CSS3/JavaScript**.
+> Built with **Python (Flask 3.1)**, **Jinja2**, **SQLite 3**, and **Neo-Brutalist HTML5/CSS3/JavaScript**.
 
 ---
 
 ## 🍽️ 1. Project Overview
 
-**TableTime** is a lightweight, responsive, and transaction-safe web application for dining table reservations. It allows customers to discover local restaurants, check real-time seating capacity, book dining slots with instant confirmation codes, and look up or cancel reservations.
+**TableTime Mumbai** is a lightweight, responsive, and transaction-safe web platform tailored for dining table reservations across 8 iconic culinary landmarks in Mumbai. Built to eliminate the friction and double-booking errors of telephone inquiries, it allows diners to check real-time seating availability, book operational 30-minute time slots with instant confirmation dining passes (`TT-XXXXXX`), and look up or cancel reservations via self-service.
 
-The application adheres strictly to software engineering best practices:
-- **No Paid APIs or Cloud Dependencies:** Operates 100% offline after installing local Python dependencies.
-- **Transaction-Safe Concurrency:** Enforces SQLite transaction locks (`BEGIN IMMEDIATE`) to eliminate overbooking.
-- **Clean Student-Developer Aesthetics:** White and light-grey backgrounds, dark-slate text, royal blue highlights, clear visual hierarchy, and full mobile/tablet responsiveness.
-- **Automated Test Coverage:** 10 automated test cases with 100% pass rate using `pytest` and `unittest`.
-- **Comprehensive Documentation:** Full academic project report, UML diagrams, SRS requirements, and test logs.
+The application features:
+- **Neo-Brutalist Visual Design System:** High-contrast 3px solid ink-black borders, tactile 3D press-down buttons, hard offset shadows (`5px 5px 0px #090d16`), and an electric palette featuring **Electric Indigo (`#4f46e5`)**, **Fresh Neo-Mint (`#10b981`)**, **Hot Coral (`#ff3366`)**, and **Sky Azure (`#0ea5e9`)** on a crisp dotted grid canvas. (Zero generic yellow).
+- **Iconic Mumbai Dataset:** 8 legendary dining venues including *The Bombay Canteen* (Lower Parel), *Trishna* (Kala Ghoda), *Leopold Cafe & Bar* (Colaba), *Cafe Madras* (Matunga), *Khyber* (Kala Ghoda), *Bastian* (Bandra West), *Pizza By The Bay* (Marine Drive), and *Gajalee* (Vile Parle).
+- **Atomic Concurrency Control:** SQLite transaction locks (`BEGIN IMMEDIATE`) eliminate race conditions and overbooking.
+- **100% Offline & Free:** Requires zero paid services, cloud databases, or API keys; runs completely locally.
+- **10 Automated Test Cases:** 100% pass rate using both `pytest` and Python standard `unittest`.
 
 ---
 
@@ -22,11 +22,11 @@ The application adheres strictly to software engineering best practices:
 
 | Page | URL Route | Description |
 | :--- | :--- | :--- |
-| **Page 1: Home** | `GET /` | TableTime branding, search bar, cuisine selector, and featured restaurant cards. |
-| **Page 2: Restaurant Listing** | `GET /restaurants` | Full directory with live search, cuisine filters, operational hours, price tiers, and seating capacity. |
-| **Page 3: Restaurant Details** | `GET /restaurants/<id>` | In-depth venue profile, operating hours, and 30-minute bookable time slots. |
-| **Page 4: Reservation Form** | `GET, POST /book/<id>` | Accessible booking form with client & server validation, capacity checks, and CSRF protection. |
-| **Page 5: Booking Confirmation** | `GET /confirmation/<ref>` | Printable receipt featuring unique reference code (`TT-XXXXXX`), arrival guidelines, and dining details. |
+| **Page 1: Home** | `GET /` | Neo-brutalist hero, quick search by locality/cuisine, and featured Mumbai restaurants. |
+| **Page 2: Restaurant Listing** | `GET /restaurants` | Full directory with live search, cuisine filters, operating hours, price tiers, and seating capacity. |
+| **Page 3: Restaurant Details** | `GET /restaurants/<id>` | Full venue profile, operating hours, and 30-minute bookable time slots. |
+| **Page 4: Reservation Form** | `GET, POST /book/<id>` | Reservation docket with client/server validation, live slot capacity feedback, and CSRF protection. |
+| **Page 5: Booking Confirmation** | `GET /confirmation/<ref>` | Retro neo-brutalist dining pass featuring unique reference code (`TT-XXXXXX`), arrival guidelines, and printable format. |
 | **Page 6: Find My Booking** | `GET, POST /find-booking` | Dual-key lookup (Booking Ref + Email), status visibility (`Confirmed` or `Cancelled`), and cancel modal. |
 | **Action: Cancel Booking** | `POST /cancel-booking/<ref>` | Safe cancellation releasing table capacity back to the restaurant. |
 
@@ -36,10 +36,10 @@ The application adheres strictly to software engineering best practices:
 
 ```text
 restaurant-reservation-system/
-├── app.py                     # Main Flask application and route handlers
+├── app.py                     # Main Flask application and route controllers
 ├── database.py                # Database connection, queries, and capacity transactions
 ├── schema.sql                 # SQLite schema with constraints and performance indexes
-├── seed_data.py               # 6 realistic sample restaurants with idempotent seeding
+├── seed_data.py               # 8 iconic Mumbai restaurants (idempotent seeding)
 ├── requirements.txt           # Python dependency specifications (Flask, pytest)
 ├── README.md                  # Complete setup, running, and testing guide
 ├── tests/
@@ -50,12 +50,12 @@ restaurant-reservation-system/
 │   ├── index.html             # Page 1: Home
 │   ├── restaurants.html       # Page 2: Restaurant Listing & Search
 │   ├── restaurant_details.html# Page 3: Restaurant Details & Time Slots
-│   ├── booking_form.html      # Page 4: Reservation Form
-│   ├── confirmation.html      # Page 5: Booking Confirmation Receipt
+│   ├── booking_form.html      # Page 4: Reservation Form Docket
+│   ├── confirmation.html      # Page 5: Booking Confirmation Dining Pass
 │   └── find_booking.html      # Page 6: Reservation Lookup & Cancellation Modal
 ├── static/
 │   ├── css/
-│   │   └── style.css          # Design system, accessible focus, responsive layouts
+│   │   └── style.css          # Neo-brutalist design tokens, 3D buttons, hard shadows
 │   └── js/
 │       └── main.js            # Dynamic slot capacity checking and modal triggers
 └── docs/
@@ -75,14 +75,13 @@ restaurant-reservation-system/
 ## ⚙️ 4. Prerequisites
 
 - **Python:** Version 3.10, 3.11, or 3.12 installed on your computer.
-- **Git:** (Optional) for version control.
+- **Web Browser:** Google Chrome, Mozilla Firefox, Microsoft Edge, or Safari.
 - **Terminal:** Windows PowerShell, Command Prompt, or Bash.
 
-To verify Python is installed, open PowerShell and execute:
+To verify Python is installed:
 ```powershell
 python --version
 ```
-Expected output: `Python 3.10.x` (or newer).
 
 ---
 
@@ -111,17 +110,7 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-### Step 5: Initialize Database & Seed Sample Data
-The application automatically creates and seeds the database when it starts. You can also explicitly run:
-```powershell
-python seed_data.py
-```
-Expected output:
-```text
-Successfully seeded 6 sample restaurants.
-```
-
-### Step 6: Start the Flask Web Application
+### Step 5: Start the Flask Web Application
 ```powershell
 python app.py
 ```
@@ -133,7 +122,7 @@ Expected output:
 Press CTRL+C to quit
 ```
 
-### Step 7: Open the Application in Your Web Browser
+### Step 6: Open the Application in Your Web Browser
 Open your browser and navigate to:
 ```text
 http://127.0.0.1:5000
@@ -142,8 +131,6 @@ http://127.0.0.1:5000
 ---
 
 ## 🧪 6. Running the Automated Tests
-
-The test suite validates positive and negative workflows, input validations, slot capacity limits, and persistence.
 
 ### Option A: Using `pytest` (Recommended)
 ```powershell
@@ -155,20 +142,20 @@ pytest tests/ -v
 python -m unittest tests/test_app.py -v
 ```
 
-### Test Results Summary:
+### Verified Test Results Summary:
 ```text
-tests/test_app.py::TableTimeTestCase::test_01_restaurant_listing_loads PASSED [ 10%]
+tests/test_app.py::TableTimeTestCase::test_01_restaurant_listing_loads PASSED           [ 10%]
 tests/test_app.py::TableTimeTestCase::test_02_restaurant_search_returns_matching PASSED [ 20%]
-tests/test_app.py::TableTimeTestCase::test_03_valid_reservation_creation PASSED [ 30%]
-tests/test_app.py::TableTimeTestCase::test_04_missing_required_fields_rejected PASSED [ 40%]
-tests/test_app.py::TableTimeTestCase::test_05_past_reservation_date_rejected PASSED [ 50%]
-tests/test_app.py::TableTimeTestCase::test_06_booking_lookup_success PASSED [ 60%]
+tests/test_app.py::TableTimeTestCase::test_03_valid_reservation_creation PASSED        [ 30%]
+tests/test_app.py::TableTimeTestCase::test_04_missing_required_fields_rejected PASSED  [ 40%]
+tests/test_app.py::TableTimeTestCase::test_05_past_reservation_date_rejected PASSED    [ 50%]
+tests/test_app.py::TableTimeTestCase::test_06_booking_lookup_success PASSED            [ 60%]
 tests/test_app.py::TableTimeTestCase::test_07_booking_lookup_fails_incorrect_details PASSED [ 70%]
 tests/test_app.py::TableTimeTestCase::test_08_reservation_cancellation_updates_status PASSED [ 80%]
-tests/test_app.py::TableTimeTestCase::test_09_over_capacity_booking_rejected PASSED [ 90%]
-tests/test_app.py::TableTimeTestCase::test_10_data_persistence_across_restart PASSED [100%]
+tests/test_app.py::TableTimeTestCase::test_09_over_capacity_booking_rejected PASSED    [ 90%]
+tests/test_app.py::TableTimeTestCase::test_10_data_persistence_across_restart PASSED   [100%]
 
-============================= 10 passed in 3.87s ==============================
+============================= 10 passed in 1.65s ==============================
 ```
 
 ---
@@ -183,18 +170,7 @@ tests/test_app.py::TableTimeTestCase::test_10_data_persistence_across_restart PA
 
 ---
 
-## 🛠️ 8. Troubleshooting & Common Issues
-
-| Issue / Error | Cause | Solution |
-| :--- | :--- | :--- |
-| **`Address already in use` (Port 5000)** | Another instance of Flask or AirPlay is running on port 5000. | Stop the other process or run `app.run(port=5001)` in `app.py`. |
-| **`PSSecurityException: Script Execution Disabled`** | PowerShell default script execution policy. | Run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` in the current terminal. |
-| **`OperationalError: database is locked`** | A long-running write lock was held. | TableTime uses 10.0s timeouts and fast atomic transactions. Restart the app if a stale lock exists. |
-| **Past Date Error on Booking** | Selected date is earlier than today's local date. | Choose today or any future calendar date. |
-
----
-
-## 📚 9. Academic Mini-Project Submission Links
+## 📚 8. Academic Mini-Project Submission Links
 
 - **Software Requirements Specification (SRS):** [`docs/requirements.md`](docs/requirements.md)
 - **Detailed Test Case Documentation:** [`docs/test_cases.md`](docs/test_cases.md)

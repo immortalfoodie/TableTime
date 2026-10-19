@@ -1,80 +1,81 @@
 {% extends "base.html" %}
 
-{% block title %}Find & Manage Booking - TableTime{% endblock %}
+{% block title %}Find & Manage Booking - TableTime Mumbai{% endblock %}
 
 {% block content %}
 <div class="form-container">
   <section class="section-header">
     <div>
+      <span class="sticker sticker-cyan" style="margin-bottom: 0.35rem;">SELF-SERVICE PORTAL</span>
       <h1 class="section-title">Find My Booking</h1>
-      <p class="section-subtitle">View your reservation details or cancel an active table booking.</p>
+      <p class="section-subtitle">Retrieve your Mumbai restaurant reservation docket or cancel an existing booking.</p>
     </div>
   </section>
 
   <!-- Lookup Form Card -->
   <section class="card" style="margin-bottom: 2rem;">
-    <h2 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem;">Lookup Details</h2>
+    <div style="background-color: var(--color-primary-light); color: var(--color-primary); border: var(--border-medium); border-radius: var(--radius-sm); padding: 0.65rem 1rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm);">
+      <h2 style="font-size: 1.15rem; font-weight: 900; text-transform: uppercase; margin: 0;">Enter Lookup Credentials</h2>
+    </div>
 
     <form action="{{ url_for('find_booking') }}" method="POST" novalidate>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
       <div class="form-grid-2">
         <div class="form-group">
-          <label for="booking_ref">Booking Reference <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+          <label for="booking_ref">Booking Reference <span style="color: var(--color-coral);" aria-hidden="true">*</span></label>
           <input
             type="text"
             id="booking_ref"
             name="booking_ref"
             class="form-control"
-            placeholder="e.g. TT-A7B8C9"
+            placeholder="e.g. TT-BKFFPY"
             value="{{ searched_ref }}"
             required
-            style="text-transform: uppercase;"
+            style="text-transform: uppercase; font-family: Consolas, monospace; font-weight: 900;"
           >
-          <span class="form-helper">The code provided on your confirmation page.</span>
+          <span class="form-helper">The alphanumeric code on your dining pass.</span>
         </div>
 
         <div class="form-group">
-          <label for="lookup_email">Email Address <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+          <label for="lookup_email">Registered Email <span style="color: var(--color-coral);" aria-hidden="true">*</span></label>
           <input
             type="email"
             id="lookup_email"
             name="email"
             class="form-control"
-            placeholder="e.g. alex@example.com"
+            placeholder="e.g. yash@example.com"
             value="{{ searched_email }}"
             required
           >
-          <span class="form-helper">The email provided when making the reservation.</span>
+          <span class="form-helper">Email submitted during table reservation.</span>
         </div>
       </div>
 
       <div style="margin-top: 1.25rem;">
-        <button type="submit" class="btn btn-primary" id="lookup-submit-btn">Find Reservation</button>
+        <button type="submit" class="btn btn-primary btn-lg" id="lookup-submit-btn">Search Reservation &rarr;</button>
       </div>
     </form>
   </section>
 
   <!-- Reservation Result Card -->
   {% if reservation %}
-    <section class="card" aria-labelledby="booking-result-heading" style="border-top: 4px solid var(--color-primary);">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+    <section class="card" aria-labelledby="booking-result-heading" style="border-top: 6px solid var(--color-primary); box-shadow: var(--shadow-lg);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
         <div>
-          <span style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-primary); font-weight: 700;">
-            Reservation Details
-          </span>
-          <h2 id="booking-result-heading" style="font-size: 1.5rem; font-weight: 800; margin-top: 0.2rem;">
+          <span class="sticker sticker-indigo" style="margin-bottom: 0.25rem;">RESERVATION DOCKET</span>
+          <h2 id="booking-result-heading" style="font-size: 1.85rem; font-weight: 900; margin-top: 0.25rem;">
             {{ reservation.booking_ref }}
           </h2>
         </div>
 
         <div>
           {% if reservation.status == 'Confirmed' %}
-            <span class="badge badge-success" style="font-size: 0.9rem; padding: 0.35rem 0.75rem;">
+            <span class="badge badge-success" style="font-size: 1rem; padding: 0.45rem 0.95rem;">
               &#10003; Confirmed
             </span>
           {% else %}
-            <span class="badge badge-danger" style="font-size: 0.9rem; padding: 0.35rem 0.75rem;">
+            <span class="badge badge-danger" style="font-size: 1rem; padding: 0.45rem 0.95rem;">
               &#10007; Cancelled
             </span>
           {% endif %}
@@ -93,15 +94,15 @@
           </tr>
           <tr>
             <th scope="row">Date of Visit</th>
-            <td>{{ reservation.reservation_date }}</td>
+            <td><strong>{{ reservation.reservation_date }}</strong></td>
           </tr>
           <tr>
             <th scope="row">Reserved Time</th>
-            <td>{{ reservation.reservation_time }}</td>
+            <td><strong>{{ reservation.reservation_time }}</strong></td>
           </tr>
           <tr>
-            <th scope="row">Guests</th>
-            <td>{{ reservation.guest_count }} guests</td>
+            <th scope="row">Party Size</th>
+            <td><strong>{{ reservation.guest_count }} guests</strong></td>
           </tr>
           <tr>
             <th scope="row">Booked Under</th>
@@ -126,41 +127,56 @@
 
       <!-- Action Section -->
       {% if reservation.status == 'Confirmed' %}
-        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--color-border-subtle); padding-top: 1.25rem; flex-wrap: wrap; gap: 1rem;">
-          <p style="font-size: 0.875rem; color: var(--color-text-muted);">
-            Need to cancel? You can cancel without any charges before your dining slot.
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: var(--border-thick); padding-top: 1.25rem; flex-wrap: wrap; gap: 1rem; background-color: var(--color-bg-page); padding: 1rem; border-radius: var(--radius-sm); border: var(--border-thin);">
+          <p style="font-size: 0.95rem; font-weight: 700; color: var(--color-text-main); margin: 0;">
+            Plans changed? You can release your table reservation anytime.
           </p>
-          <button type="button" class="btn btn-danger" id="open-cancel-modal-btn" onclick="document.getElementById('cancel-modal').classList.add('active'); document.getElementById('cancel-modal').style.display='flex';">
+          <button
+            type="button"
+            class="btn btn-danger"
+            id="open-cancel-modal-btn"
+            onclick="document.getElementById('cancel-modal').classList.add('active'); document.getElementById('cancel-modal').style.display='flex';"
+          >
             Cancel Reservation
           </button>
         </div>
       {% else %}
         <div class="alert alert-error" style="margin-top: 1rem;">
-          <span>This reservation has been cancelled. Seating capacity has been released back to the restaurant.</span>
+          <span>⚠️ This reservation has been cancelled. Seating capacity has been released back to {{ reservation.restaurant_name }}.</span>
         </div>
       {% endif %}
     </section>
 
-    <!-- Cancellation Confirmation Accessible Modal Dialog -->
+    <!-- Cancellation Confirmation Neo-Brutalist Accessible Modal Dialog -->
     <div class="modal-overlay" id="cancel-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div class="modal-card">
-        <h3 id="modal-title" style="font-size: 1.25rem; font-weight: 700; color: var(--color-text-main); margin-bottom: 0.5rem;">
+        <span class="sticker sticker-coral" style="margin-bottom: 0.5rem;">WARNING ACTION</span>
+        <h3 id="modal-title" style="font-size: 1.5rem; font-weight: 900; color: var(--color-text-main); margin: 0.35rem 0 0.5rem 0; text-transform: uppercase;">
           Confirm Cancellation
         </h3>
-        <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem;">
+        <p style="color: var(--color-text-muted); font-size: 1rem; font-weight: 600; line-height: 1.5; margin-bottom: 1rem;">
           Are you sure you want to cancel reservation <strong>{{ reservation.booking_ref }}</strong> at <strong>{{ reservation.restaurant_name }}</strong>?
         </p>
-        <p style="font-size: 0.85rem; color: #dc2626; margin-bottom: 1.5rem;">
-          This action cannot be undone. You will need to make a new booking if you change your mind.
-        </p>
+        <div style="background-color: var(--color-error-bg); border: var(--border-thin); padding: 0.75rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; font-weight: 800; font-size: 0.9rem;">
+          ⚠️ This action cannot be undone. Capacity will immediately be restored for other Mumbai diners.
+        </div>
 
         <form action="{{ url_for('cancel_booking', booking_ref=reservation.booking_ref) }}" method="POST">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <input type="hidden" name="email" value="{{ reservation.email }}">
 
           <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" id="close-modal-btn" onclick="document.getElementById('cancel-modal').classList.remove('active'); document.getElementById('cancel-modal').style.display='none';">Keep Reservation</button>
-            <button type="submit" class="btn btn-danger" id="confirm-cancel-btn">Yes, Cancel Booking</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="close-modal-btn"
+              onclick="document.getElementById('cancel-modal').classList.remove('active'); document.getElementById('cancel-modal').style.display='none';"
+            >
+              Keep My Table
+            </button>
+            <button type="submit" class="btn btn-danger" id="confirm-cancel-btn">
+              Yes, Cancel Booking
+            </button>
           </div>
         </form>
       </div>

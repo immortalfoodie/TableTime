@@ -1,26 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Reserve Table at {{ restaurant.name }} - TableTime{% endblock %}
+{% block title %}Reserve Table at {{ restaurant.name }} - TableTime Mumbai{% endblock %}
 
 {% block content %}
 <div class="form-container">
   <!-- Back Link -->
-  <nav aria-label="Breadcrumb" style="margin-bottom: 1.25rem; font-size: 0.9rem;">
-    <a href="{{ url_for('restaurant_details', restaurant_id=restaurant.id) }}" style="color: var(--color-primary); text-decoration: none;">
-      &larr; Back to {{ restaurant.name }} Details
+  <nav aria-label="Breadcrumb" style="margin-bottom: 1.5rem;">
+    <a href="{{ url_for('restaurant_details', restaurant_id=restaurant.id) }}" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.85rem;">
+      &larr; Back to {{ restaurant.name }}
     </a>
   </nav>
 
-  <article class="card">
-    <div style="border-bottom: 1px solid var(--color-border-subtle); padding-bottom: 1rem; margin-bottom: 1.5rem;">
-      <h1 class="section-title" style="font-size: 1.65rem;">Table Reservation</h1>
-      <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
-        Reserving at <strong>{{ restaurant.name }}</strong> &bull; {{ restaurant.location }}
+  <article class="card" style="box-shadow: var(--shadow-lg);">
+    <div style="background-color: var(--color-primary-light); color: var(--color-primary); border: var(--border-thick); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.75rem; box-shadow: var(--shadow-sm);">
+      <span class="sticker sticker-coral" style="margin-bottom: 0.35rem;">RESERVATION DOCKET</span>
+      <h1 class="section-title" style="font-size: 1.85rem; margin-top: 0.25rem; color: var(--color-ink);">{{ restaurant.name }}</h1>
+      <p style="font-size: 1rem; font-weight: 700; color: var(--color-ink); margin-top: 0.25rem;">
+        📍 {{ restaurant.location }} &bull; {{ restaurant.cuisine }}
       </p>
     </div>
 
     <!-- Live Capacity Status Tag -->
-    <div id="slot-capacity-indicator" style="font-size: 0.875rem; font-weight: 600; margin-bottom: 1.25rem; min-height: 1.25rem;" aria-live="polite"></div>
+    <div id="slot-capacity-indicator" style="font-size: 0.95rem; font-weight: 800; margin-bottom: 1.25rem; min-height: 1.5rem;" aria-live="polite"></div>
 
     <form
       action="{{ url_for('book', restaurant_id=restaurant.id) }}"
@@ -33,68 +34,68 @@
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
       <!-- Customer Contact Details -->
-      <fieldset style="border: none; padding: 0; margin-bottom: 1.5rem;">
-        <legend style="font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; color: var(--color-text-main);">
-          1. Contact Information
+      <fieldset style="border: var(--border-medium); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.75rem; background-color: var(--color-bg-page);">
+        <legend style="font-weight: 900; font-size: 1.05rem; padding: 0.25rem 0.65rem; background-color: var(--color-accent-mint-light); color: #064e3b; border: var(--border-thin); border-radius: var(--radius-sm); box-shadow: 2px 2px 0px #000; text-transform: uppercase;">
+          1. Diner Contact Details
         </legend>
 
-        <div class="form-group" style="margin-bottom: 1rem;">
-          <label for="customer_name">Full Name <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+        <div class="form-group">
+          <label for="customer_name">Full Name <span style="color: var(--color-coral);" aria-hidden="true">*</span></label>
           <input
             type="text"
             id="customer_name"
             name="customer_name"
             class="form-control"
-            placeholder="e.g. Alex Morgan"
+            placeholder="e.g. Yash Naik"
             value="{{ form_data.customer_name }}"
             required
             autocomplete="name"
           >
-          <span class="form-helper">Enter the primary guest's full name.</span>
+          <span class="form-helper">Primary guest name for table reservation docket.</span>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="email">Email Address <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+            <label for="email">Email Address <span style="color: var(--color-coral);" aria-hidden="true">*</span></label>
             <input
               type="email"
               id="email"
               name="email"
               class="form-control"
-              placeholder="alex@example.com"
+              placeholder="yash@example.com"
               value="{{ form_data.email }}"
               required
               autocomplete="email"
             >
-            <span class="form-helper">Your confirmation & lookup reference will be tied to this email.</span>
+            <span class="form-helper">Booking reference code will be linked to this email.</span>
           </div>
 
           <div class="form-group">
-            <label for="phone">Phone Number <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+            <label for="phone">Phone Number <span style="color: var(--color-coral);" aria-hidden="true">*</span></label>
             <input
               type="tel"
               id="phone"
               name="phone"
               class="form-control"
-              placeholder="+91 98765 43210"
+              placeholder="+91 98200 12345"
               value="{{ form_data.phone }}"
               required
               autocomplete="tel"
             >
-            <span class="form-helper">Used by restaurant staff for reservation queries.</span>
+            <span class="form-helper">For Mumbai restaurant host queries.</span>
           </div>
         </div>
       </fieldset>
 
       <!-- Reservation Details -->
-      <fieldset style="border: none; padding: 0; margin-bottom: 1.5rem;">
-        <legend style="font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; color: var(--color-text-main);">
-          2. Dining Details
+      <fieldset style="border: var(--border-medium); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.75rem; background-color: var(--color-bg-page);">
+        <legend style="font-weight: 900; font-size: 1.05rem; padding: 0.25rem 0.65rem; background-color: var(--color-cyan-light); border: var(--border-thin); border-radius: var(--radius-sm); box-shadow: 2px 2px 0px #000; text-transform: uppercase;">
+          2. Visit & Seating Details
         </legend>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="reservation_date">Date of Visit <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+            <label for="reservation_date">Date of Visit <span style="color: var(--color-coral);" aria-hidden="true">*</span></label>
             <input
               type="date"
               id="reservation_date"
@@ -104,11 +105,11 @@
               min="{{ today_str }}"
               required
             >
-            <span class="form-helper">Reservations accepted for today or future dates.</span>
+            <span class="form-helper">Today or future dates accepted.</span>
           </div>
 
           <div class="form-group">
-            <label for="reservation_time">Time Slot <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+            <label for="reservation_time">Time Slot <span style="color: var(--color-coral);" aria-hidden="true">*</span></label>
             <select id="reservation_time" name="reservation_time" class="form-control" required>
               {% for slot in time_slots %}
                 <option value="{{ slot }}" {% if form_data.reservation_time == slot %}selected{% endif %}>
@@ -116,12 +117,12 @@
                 </option>
               {% endfor %}
             </select>
-            <span class="form-helper">Operating hours: {{ restaurant.opening_time }} &ndash; {{ restaurant.closing_time }}</span>
+            <span class="form-helper">Hours: {{ restaurant.opening_time }} &ndash; {{ restaurant.closing_time }}</span>
           </div>
         </div>
 
-        <div class="form-group" style="margin-top: 1rem;">
-          <label for="guest_count">Number of Guests <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+        <div class="form-group" style="margin-top: 0.5rem;">
+          <label for="guest_count">Number of Guests <span style="color: var(--color-coral);" aria-hidden="true">*</span></label>
           <input
             type="number"
             id="guest_count"
@@ -134,25 +135,25 @@
             required
             style="max-width: 200px;"
           >
-          <span class="form-helper">Party size from 1 up to {{ max_guests }} guests online.</span>
+          <span class="form-helper">Online party limit: 1 to {{ max_guests }} guests.</span>
         </div>
 
-        <div class="form-group" style="margin-top: 1rem;">
+        <div class="form-group" style="margin-top: 0.5rem;">
           <label for="special_requests">Special Requests (Optional)</label>
           <textarea
             id="special_requests"
             name="special_requests"
             class="form-control"
             rows="3"
-            placeholder="e.g. Window table requested, anniversary celebration, high chair needed, dietary allergies..."
+            placeholder="e.g. Window booth requested, sea view table, anniversary celebration, high chair needed, seafood allergy..."
           >{{ form_data.special_requests }}</textarea>
-          <span class="form-helper">We will do our best to accommodate your seating preferences.</span>
+          <span class="form-helper">We communicate special seating and dietary notes directly to the kitchen.</span>
         </div>
       </fieldset>
 
       <!-- Form Action Buttons -->
-      <div style="display: flex; gap: 1rem; align-items: center; border-top: 1px solid var(--color-border-subtle); padding-top: 1.5rem;">
-        <button type="submit" class="btn btn-primary btn-lg" id="submit-booking-btn">Confirm Reservation</button>
+      <div style="display: flex; gap: 1rem; align-items: center; border-top: var(--border-thick); padding-top: 1.5rem; flex-wrap: wrap;">
+        <button type="submit" class="btn btn-primary btn-lg" id="submit-booking-btn">Confirm Reservation &rarr;</button>
         <a href="{{ url_for('restaurant_details', restaurant_id=restaurant.id) }}" class="btn btn-secondary btn-lg" id="cancel-booking-form-btn">Cancel</a>
       </div>
     </form>

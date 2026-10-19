@@ -1,56 +1,76 @@
 /* ==========================================================================
-   TableTime - Restaurant Reservation System
-   Consistent, accessible, and clean design system for academic mini-project.
+   TableTime Mumbai - Modern Neo-Brutalist Design System
+   Palette: Electric Indigo, Hot Coral, Neo-Mint, Sky Azure, and Deep Ink.
+   High-contrast, bold geometry, tactile offset drop-shadows. ZERO generic yellow.
    ========================================================================== */
 
 /* Design Tokens & CSS Variables */
 :root {
+  /* Canvas & Card Backgrounds */
   --color-bg-page: #f8fafc;
   --color-bg-card: #ffffff;
   --color-bg-subtle: #f1f5f9;
-  --color-text-main: #0f172a;
-  --color-text-muted: #475569;
-  --color-border: #cbd5e1;
-  --color-border-subtle: #e2e8f0;
+  
+  /* Stark Ink Contrast */
+  --color-ink: #090d16;
+  --color-text-main: #090d16;
+  --color-text-muted: #334155;
+  --color-border: #090d16;
 
-  /* Primary Blue Accents */
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-primary-light: #eff6ff;
-  --color-primary-border: #93c5fd;
+  /* Modern Neo-Brutalist Palette (Indigo, Coral, Mint, Sky, Lavender) */
+  --color-primary: #4f46e5;          /* Electric Indigo */
+  --color-primary-hover: #4338ca;
+  --color-primary-light: #e0e7ff;
+  
+  --color-accent-coral: #ff3366;     /* Hot Coral Punch */
+  --color-accent-coral-hover: #e11d48;
+  --color-accent-coral-light: #ffe4e6;
+
+  --color-accent-mint: #10b981;      /* Fresh Neo-Mint */
+  --color-accent-mint-hover: #059669;
+  --color-accent-mint-light: #d1fae5;
+
+  --color-accent-sky: #0ea5e9;       /* Vibrant Sky Azure */
+  --color-accent-sky-light: #e0f2fe;
+
+  --color-accent-purple: #8b5cf6;    /* Deep Purple */
+  --color-accent-purple-light: #ede9fe;
 
   /* Status Colors */
-  --color-success-bg: #ecfdf5;
-  --color-success-text: #065f46;
-  --color-success-border: #a7f3d0;
-
-  --color-error-bg: #fef2f2;
-  --color-error-text: #991b1b;
-  --color-error-border: #fecaca;
-
-  --color-warning-bg: #fffbeb;
-  --color-warning-text: #92400e;
-  --color-warning-border: #fde68a;
+  --color-success-bg: #d1fae5;
+  --color-success-text: #064e3b;
+  --color-error-bg: #ffe4e6;
+  --color-error-text: #881337;
+  --color-warning-bg: #fef3c7;
+  --color-warning-text: #78350f;
 
   /* Typography */
-  --font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-size-base: 1rem;
-  --line-height-base: 1.5;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  /* Spacing */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  --spacing-2xl: 3rem;
+  /* Neo-Brutalist Hard Borders & Shadows (Zero Blur) */
+  --border-thick: 3px solid #090d16;
+  --border-medium: 2.5px solid #090d16;
+  --border-thin: 2px solid #090d16;
 
-  /* Radius & Shadows */
+  --shadow-sm: 3px 3px 0px #090d16;
+  --shadow-md: 5px 5px 0px #090d16;
+  --shadow-lg: 8px 8px 0px #090d16;
+  --shadow-hover: 7px 7px 0px #090d16;
+  --shadow-active: 1px 1px 0px #090d16;
+
+  /* Radii */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --radius-pill: 999px;
+
+  /* Spacing */
+  --spacing-xs: 0.35rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1.25rem;
+  --spacing-lg: 1.75rem;
+  --spacing-xl: 2.5rem;
+  --spacing-2xl: 3.5rem;
 }
 
 /* Base Styles & Resets */
@@ -62,39 +82,44 @@
 
 body {
   font-family: var(--font-family);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
   color: var(--color-text-main);
   background-color: var(--color-bg-page);
+  /* Crisp neo-brutalist dotted matrix */
+  background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+  background-size: 24px 24px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  line-height: 1.5;
 }
 
-/* Accessibility: Visible Focus Indicators */
+/* Accessibility: High-Visibility Focus Outline */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
   outline: 3px solid var(--color-primary);
-  outline-offset: 2px;
+  outline-offset: 3px;
+  background-color: #f8fafc !important;
 }
 
-/* Header & Navigation Bar */
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
 .site-header {
-  background-color: var(--color-bg-card);
-  border-bottom: 1px solid var(--color-border-subtle);
+  background-color: #ffffff;
+  border-bottom: var(--border-thick);
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 0px rgba(9, 13, 22, 0.08);
 }
 
 .nav-container {
-  max-width: 1100px;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-lg);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -104,67 +129,88 @@ textarea:focus-visible {
 .brand-link {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
   text-decoration: none;
-  color: var(--color-primary);
-  font-weight: 700;
-  font-size: 1.35rem;
+  color: var(--color-text-main);
+  font-weight: 900;
+  font-size: 1.45rem;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
 }
 
 .brand-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 42px;
+  height: 42px;
   background-color: var(--color-primary);
   color: #ffffff;
+  border: var(--border-thick);
   border-radius: var(--radius-sm);
-  font-weight: 800;
-  font-size: 1.1rem;
+  font-weight: 900;
+  font-size: 1.25rem;
+  box-shadow: 3px 3px 0px #090d16;
+  transition: transform 0.12s ease;
+}
+
+.brand-link:hover .brand-icon {
+  transform: rotate(-6deg) scale(1.05);
 }
 
 .nav-links {
   display: flex;
   align-items: center;
   list-style: none;
-  gap: var(--spacing-lg);
+  gap: 0.85rem;
 }
 
 .nav-link {
   text-decoration: none;
-  color: var(--color-text-muted);
-  font-weight: 500;
+  color: var(--color-text-main);
+  font-weight: 800;
   font-size: 0.95rem;
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: 0.5rem 0.95rem;
+  border: var(--border-thin);
   border-radius: var(--radius-sm);
-  transition: color 0.15s ease;
+  background-color: #ffffff;
+  box-shadow: 2px 2px 0px #090d16;
+  transition: all 0.12s ease;
 }
 
 .nav-link:hover {
-  color: var(--color-primary);
+  background-color: var(--color-accent-mint-light);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #090d16;
 }
 
 .nav-link.active {
+  background-color: var(--color-primary-light);
   color: var(--color-primary);
-  font-weight: 600;
+  border: var(--border-thick);
+  box-shadow: 3px 3px 0px #090d16;
 }
 
 .nav-cta {
-  background-color: var(--color-primary);
+  background-color: var(--color-accent-coral) !important;
   color: #ffffff !important;
-  padding: 0.45rem 0.9rem;
-  border-radius: var(--radius-sm);
+  font-weight: 900 !important;
+  border: var(--border-thick) !important;
+  box-shadow: 3px 3px 0px #090d16 !important;
 }
 
 .nav-cta:hover {
-  background-color: var(--color-primary-hover);
+  background-color: var(--color-accent-coral-hover) !important;
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 5px 5px 0px #090d16 !important;
 }
 
-/* Main Container Layout */
+/* ==========================================================================
+   Main Content Layout
+   ========================================================================== */
 .main-content {
   flex: 1;
-  max-width: 1100px;
+  max-width: 1180px;
   width: 100%;
   margin: 0 auto;
   padding: var(--spacing-xl) var(--spacing-lg);
@@ -177,10 +223,12 @@ textarea:focus-visible {
 
 .alert {
   padding: var(--spacing-md);
-  border-radius: var(--radius-sm);
+  border: var(--border-thick);
+  border-radius: var(--radius-md);
   margin-bottom: var(--spacing-sm);
-  font-size: 0.95rem;
-  border: 1px solid transparent;
+  font-size: 1rem;
+  font-weight: 800;
+  box-shadow: var(--shadow-md);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -189,30 +237,46 @@ textarea:focus-visible {
 .alert-success {
   background-color: var(--color-success-bg);
   color: var(--color-success-text);
-  border-color: var(--color-success-border);
+  border-color: #090d16;
 }
 
 .alert-error {
   background-color: var(--color-error-bg);
   color: var(--color-error-text);
-  border-color: var(--color-error-border);
+  border-color: #090d16;
 }
 
-/* Buttons */
+/* ==========================================================================
+   Buttons (Tactile Neo-Brutalist Mechanical Controls)
+   ========================================================================== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 500;
-  padding: 0.55rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding: 0.65rem 1.35rem;
+  border: var(--border-thick);
   border-radius: var(--radius-sm);
-  border: 1px solid transparent;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+  user-select: none;
+}
+
+.btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-active);
 }
 
 .btn-primary {
@@ -226,22 +290,25 @@ textarea:focus-visible {
 
 .btn-secondary {
   background-color: #ffffff;
-  color: var(--color-text-main);
-  border-color: var(--color-border);
+  color: var(--color-ink);
 }
 
 .btn-secondary:hover {
-  background-color: var(--color-bg-subtle);
-  border-color: #94a3b8;
+  background-color: var(--color-primary-light);
 }
 
 .btn-danger {
-  background-color: #dc2626;
+  background-color: var(--color-accent-coral);
   color: #ffffff;
 }
 
 .btn-danger:hover {
-  background-color: #b91c1c;
+  background-color: var(--color-accent-coral-hover);
+}
+
+.btn-mint {
+  background-color: var(--color-accent-mint);
+  color: #ffffff;
 }
 
 .btn-block {
@@ -249,51 +316,129 @@ textarea:focus-visible {
 }
 
 .btn-lg {
-  padding: 0.75rem 1.5rem;
-  font-size: 1.05rem;
+  padding: 0.85rem 1.85rem;
+  font-size: 1.15rem;
+  box-shadow: var(--shadow-md);
 }
 
-/* Cards & Layout */
+.btn-lg:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* ==========================================================================
+   Cards & Layout
+   ========================================================================== */
 .card {
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border-subtle);
+  background-color: #ffffff;
+  border: var(--border-thick);
   border-radius: var(--radius-md);
   padding: var(--spacing-lg);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 .card-hover {
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .card-hover:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-border);
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-lg);
 }
 
-/* Hero Section (Page 1: Home) */
+/* Sticker Badges */
+.sticker {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: var(--border-thin);
+  border-radius: var(--radius-pill);
+  box-shadow: 2px 2px 0px #090d16;
+}
+
+.sticker-indigo {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.sticker-coral {
+  background-color: var(--color-accent-coral);
+  color: #ffffff;
+}
+
+.sticker-mint {
+  background-color: var(--color-accent-mint-light);
+  color: #065f46;
+}
+
+.sticker-sky {
+  background-color: var(--color-accent-sky-light);
+  color: #0369a1;
+}
+
+.sticker-purple {
+  background-color: var(--color-accent-purple-light);
+  color: #6d28d9;
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
 .hero-section {
   background-color: #ffffff;
-  border: 1px solid var(--color-border-subtle);
+  border: var(--border-thick);
   border-radius: var(--radius-lg);
   padding: var(--spacing-2xl) var(--spacing-xl);
   text-align: center;
   margin-bottom: var(--spacing-2xl);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-badge-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border: var(--border-thick);
+  padding: 0.4rem 0.95rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-md);
 }
 
 .hero-title {
-  font-size: 2.25rem;
-  font-weight: 800;
+  font-size: 2.85rem;
+  font-weight: 900;
   color: var(--color-text-main);
   margin-bottom: var(--spacing-sm);
-  letter-spacing: -0.025em;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.hero-title mark {
+  background-color: var(--color-accent-mint-light);
+  color: #064e3b;
+  padding: 0.1rem 0.5rem;
+  border: var(--border-thin);
+  box-shadow: 3px 3px 0px #090d16;
+  border-radius: var(--radius-sm);
 }
 
 .hero-subtitle {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: var(--color-text-muted);
-  max-width: 650px;
+  max-width: 740px;
   margin: 0 auto var(--spacing-xl) auto;
 }
 
@@ -306,12 +451,13 @@ textarea:focus-visible {
 
 /* Quick Search Card in Hero */
 .hero-search-box {
-  max-width: 750px;
+  max-width: 840px;
   margin: var(--spacing-xl) auto 0 auto;
-  background-color: var(--color-bg-subtle);
-  border: 1px solid var(--color-border-subtle);
+  background-color: var(--color-primary-light);
+  border: var(--border-thick);
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
+  box-shadow: var(--shadow-md);
 }
 
 .search-form-row {
@@ -323,7 +469,7 @@ textarea:focus-visible {
 .search-form-row input,
 .search-form-row select {
   flex: 1;
-  min-width: 180px;
+  min-width: 200px;
 }
 
 /* Section Headings */
@@ -332,24 +478,31 @@ textarea:focus-visible {
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .section-title {
-  font-size: 1.45rem;
-  font-weight: 700;
+  font-size: 1.85rem;
+  font-weight: 900;
   color: var(--color-text-main);
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
 }
 
 .section-subtitle {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
+  font-weight: 600;
   color: var(--color-text-muted);
-  margin-top: var(--spacing-xs);
+  margin-top: 0.2rem;
 }
 
-/* Restaurant Grid */
+/* ==========================================================================
+   Restaurant Grid & Cards
+   ========================================================================== */
 .restaurant-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-2xl);
 }
@@ -358,17 +511,18 @@ textarea:focus-visible {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border-subtle);
+  background-color: #ffffff;
+  border: var(--border-thick);
   border-radius: var(--radius-md);
   padding: var(--spacing-lg);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
 }
 
 .restaurant-card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-border);
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-lg);
 }
 
 .card-top {
@@ -376,9 +530,11 @@ textarea:focus-visible {
 }
 
 .restaurant-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: var(--spacing-xs);
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+  line-height: 1.25;
 }
 
 .restaurant-meta {
@@ -387,79 +543,131 @@ textarea:focus-visible {
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: var(--spacing-sm);
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .badge {
   display: inline-block;
-  padding: 0.2rem 0.5rem;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--radius-sm);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.825rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  border: var(--border-thin);
+  box-shadow: 2px 2px 0px #090d16;
 }
 
 .badge-cuisine {
   background-color: var(--color-primary-light);
   color: var(--color-primary);
-  border: 1px solid var(--color-primary-border);
 }
 
 .badge-price {
-  background-color: #f3f4f6;
-  color: #374151;
-  border: 1px solid #d1d5db;
+  background-color: var(--color-accent-mint-light);
+  color: #065f46;
+  font-weight: 900;
 }
 
 .badge-success {
-  background-color: var(--color-success-bg);
-  color: var(--color-success-text);
-  border: 1px solid var(--color-success-border);
+  background-color: var(--color-accent-mint-light);
+  color: #064e3b;
 }
 
 .badge-danger {
-  background-color: var(--color-error-bg);
-  color: var(--color-error-text);
-  border: 1px solid var(--color-error-border);
+  background-color: var(--color-accent-coral-light);
+  color: #881337;
 }
 
 .restaurant-description {
-  font-size: 0.925rem;
+  font-size: 0.95rem;
   color: var(--color-text-muted);
-  line-height: 1.45;
+  line-height: 1.5;
   margin-bottom: var(--spacing-md);
+  font-weight: 500;
 }
 
 .restaurant-details-list {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  color: var(--color-text-main);
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.45rem;
   margin-bottom: var(--spacing-md);
+  padding: 0.75rem;
+  background-color: var(--color-bg-subtle);
+  border: var(--border-thin);
+  border-radius: var(--radius-sm);
 }
 
 .restaurant-details-list li {
   display: flex;
   align-items: baseline;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .card-footer-actions {
   display: flex;
-  gap: var(--spacing-sm);
+  gap: 0.65rem;
   margin-top: auto;
 }
 
-/* Filter & Search Bar (Page 2: Restaurants) */
+/* ==========================================================================
+   Form Controls (Sharp Neo-Brutalist Inputs)
+   ========================================================================== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--color-text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.form-control {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem 0.95rem;
+  border: var(--border-thick);
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  color: var(--color-text-main);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.12s ease;
+  width: 100%;
+}
+
+.form-control:focus {
+  background-color: #ffffff;
+  border-color: var(--color-primary);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #090d16;
+  outline: none;
+}
+
+.form-helper {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-top: 0.15rem;
+}
+
+/* Filter Bar */
 .filter-bar {
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border-subtle);
+  background-color: #ffffff;
+  border: var(--border-thick);
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
   margin-bottom: var(--spacing-xl);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 .filter-form {
@@ -469,70 +677,9 @@ textarea:focus-visible {
   align-items: flex-end;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  flex: 1;
-  min-width: 200px;
-}
-
-.form-group label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-text-main);
-}
-
-.form-control {
-  font-family: inherit;
-  font-size: 0.95rem;
-  padding: 0.55rem 0.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background-color: #ffffff;
-  color: var(--color-text-main);
-  width: 100%;
-}
-
-.form-control:focus {
-  border-color: var(--color-primary);
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-.form-helper {
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-}
-
-/* Detail Page Layout (Page 3) */
-.detail-layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--spacing-xl);
-}
-
-.time-slot-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  gap: 0.5rem;
-  margin-top: var(--spacing-sm);
-}
-
-.time-slot-pill {
-  padding: 0.5rem 0.25rem;
-  text-align: center;
-  background-color: var(--color-bg-subtle);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-text-main);
-}
-
-/* Booking Form (Page 4) */
+/* Form Layout Grids */
 .form-container {
-  max-width: 680px;
+  max-width: 740px;
   margin: 0 auto;
 }
 
@@ -542,61 +689,104 @@ textarea:focus-visible {
   gap: var(--spacing-md);
 }
 
-/* Confirmation Page (Page 5) */
+/* ==========================================================================
+   Restaurant Details Layout
+   ========================================================================== */
+.detail-layout {
+  display: grid;
+  grid-template-columns: 2fr 1.15fr;
+  gap: var(--spacing-xl);
+}
+
+.time-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+  gap: 0.65rem;
+  margin-top: var(--spacing-sm);
+}
+
+.time-slot-pill {
+  padding: 0.65rem 0.4rem;
+  text-align: center;
+  background-color: #ffffff;
+  border: var(--border-medium);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--color-text-main);
+  box-shadow: 2px 2px 0px #090d16;
+  transition: all 0.1s ease;
+}
+
+.time-slot-pill:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #090d16;
+}
+
+/* ==========================================================================
+   Receipt & Confirmation Page (Neo-Brutalist Pass / Ticket)
+   ========================================================================== */
 .receipt-card {
-  max-width: 650px;
+  max-width: 700px;
   margin: 0 auto;
   background-color: #ffffff;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-2xl);
-  box-shadow: var(--shadow-sm);
+  border: var(--border-thick);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-lg);
+  position: relative;
 }
 
 .confirmation-header {
   text-align: center;
-  border-bottom: 2px dashed var(--color-border);
+  border-bottom: 3px dashed #090d16;
   padding-bottom: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
 }
 
 .confirmation-icon {
-  width: 52px;
-  height: 52px;
-  background-color: var(--color-success-bg);
-  color: var(--color-success-text);
-  border: 2px solid var(--color-success-border);
+  width: 64px;
+  height: 64px;
+  background-color: var(--color-accent-mint-light);
+  color: #065f46;
+  border: var(--border-thick);
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
+  font-size: 2.25rem;
+  font-weight: 900;
   margin-bottom: var(--spacing-sm);
+  box-shadow: var(--shadow-sm);
 }
 
 .booking-ref-box {
   background-color: var(--color-primary-light);
-  border: 1px solid var(--color-primary-border);
+  border: var(--border-thick);
   border-radius: var(--radius-sm);
   padding: var(--spacing-md);
-  margin: var(--spacing-md) 0;
+  margin: var(--spacing-md) auto;
   text-align: center;
+  max-width: 440px;
+  box-shadow: var(--shadow-sm);
 }
 
 .booking-ref-label {
   font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 900;
 }
 
 .booking-ref-code {
-  font-family: Consolas, monospace;
-  font-size: 1.85rem;
-  font-weight: 800;
-  color: var(--color-text-main);
-  letter-spacing: 0.08em;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: var(--color-ink);
+  letter-spacing: 0.1em;
   margin-top: 0.2rem;
 }
 
@@ -608,24 +798,28 @@ textarea:focus-visible {
 
 .details-table th,
 .details-table td {
-  padding: 0.65rem 0.5rem;
-  border-bottom: 1px solid var(--color-border-subtle);
-  font-size: 0.925rem;
+  padding: 0.75rem 0.65rem;
+  border-bottom: 2px solid #090d16;
+  font-size: 0.975rem;
 }
 
 .details-table th {
   text-align: left;
   color: var(--color-text-muted);
-  font-weight: 600;
-  width: 40%;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  width: 38%;
 }
 
 .details-table td {
   color: var(--color-text-main);
-  font-weight: 500;
+  font-weight: 700;
 }
 
-/* Modal Dialog */
+/* ==========================================================================
+   Accessible Modal Dialog
+   ========================================================================== */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -633,7 +827,8 @@ textarea:focus-visible {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(15, 23, 42, 0.6);
+  background-color: rgba(9, 13, 22, 0.75);
+  backdrop-filter: blur(3px);
   z-index: 1000;
   align-items: center;
   justify-content: center;
@@ -646,11 +841,12 @@ textarea:focus-visible {
 
 .modal-card {
   background-color: #ffffff;
+  border: var(--border-thick);
   border-radius: var(--radius-md);
-  max-width: 460px;
+  max-width: 500px;
   width: 100%;
   padding: var(--spacing-xl);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-lg);
 }
 
 .modal-actions {
@@ -660,18 +856,21 @@ textarea:focus-visible {
   margin-top: var(--spacing-lg);
 }
 
-/* Footer */
+/* ==========================================================================
+   Footer
+   ========================================================================== */
 .site-footer {
-  background-color: var(--color-bg-card);
-  border-top: 1px solid var(--color-border-subtle);
+  background-color: #ffffff;
+  border-top: var(--border-thick);
   padding: var(--spacing-xl) var(--spacing-lg);
   margin-top: auto;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
+  font-weight: 700;
   color: var(--color-text-muted);
 }
 
 .footer-container {
-  max-width: 1100px;
+  max-width: 1180px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -680,10 +879,13 @@ textarea:focus-visible {
   gap: var(--spacing-md);
 }
 
-/* Print Styles for Booking Receipt */
+/* ==========================================================================
+   Print Stylesheet
+   ========================================================================== */
 @media print {
   body {
     background-color: #ffffff;
+    background-image: none;
   }
   .site-header,
   .site-footer,
@@ -696,23 +898,25 @@ textarea:focus-visible {
     max-width: 100%;
   }
   .receipt-card {
-    border: none;
+    border: 2px solid #000;
     box-shadow: none;
-    padding: 0;
+    padding: 1.5rem;
   }
 }
 
-/* Responsive Media Queries */
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
 @media (max-width: 768px) {
   .nav-container {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   }
   .nav-links {
     width: 100%;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
-    gap: var(--spacing-sm);
+    gap: 0.5rem;
   }
   .detail-layout {
     grid-template-columns: 1fr;
@@ -721,6 +925,9 @@ textarea:focus-visible {
     grid-template-columns: 1fr;
   }
   .hero-title {
-    font-size: 1.85rem;
+    font-size: 2.15rem;
+  }
+  .restaurant-grid {
+    grid-template-columns: 1fr;
   }
 }
