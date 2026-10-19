@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Restaurants - TableTime{% endblock %}
+
+{% block content %}
+<section class="section-header">
+  <div>
+    <h1 class="section-title">Browse Restaurants</h1>
+    <p class="section-subtitle">Discover culinary experiences, compare opening hours, and book available dining tables.</p>
+  </div>
+</section>
+
+<!-- Filter & Search Controls -->
+<section class="filter-bar" aria-label="Restaurant Filters">
+  <form action="{{ url_for('restaurants') }}" method="GET" class="filter-form" role="search">
+    <div class="form-group" style="flex: 2;">
+      <label for="search-input">Search Restaurant, Cuisine, or Location</label>
+      <input
+        type="search"
+        id="search-input"
+        name="search"
+        class="form-control"
+        placeholder="e.g. Spice, Italian, Bandra, Cafe..."
+        value="{{ search_query }}"
+      >
+    </div>
+
+    <div class="form-group" style="flex: 1;">
+      <label for="cuisine-select">Filter by Cuisine</label>
+      <select id="cuisine-select" name="cuisine" class="form-control">
+        <option value="">All Cuisines</option>
+        {% for c in cuisines %}
+          <option value="{{ c }}" {% if selected_cuisine == c %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div style="display: flex; gap: 0.5rem; align-items: flex-end;">
+      <button type="submit" class="btn btn-primary" id="filter-submit-btn">Apply Filters</button>
+      {% if search_query or selected_cuisine %}
+        <a href="{{ url_for('restaurants') }}" class="btn btn-secondary" id="clear-filters-btn">Clear</a>
+      {% endif %}
+    </div>
+  </form>
+</section>
+
+<!-- Search Status Summary -->
+{% if search_query or selected_cuisine %}
+  <div style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--color-text-muted);">
+    Showing results for
+    {% if search_query %}<strong>"{{ search_query }}"</strong>{% endif %}
+    {% if selected_cuisine %} in <em>{{ selected_cuisine }}</em>{% endif %}
+    ({{ restaurants|length }} found)
+  </div>
+{% endif %}
+
+<!-- Restaurants Grid -->
+{% if restaurants %}
+  <div class="restaurant-grid">
+    {% for r in restaurants %}
+      <article class="restaurant-card" aria-labelledby="rest-title-{{ r.id }}">
+        <div class="card-top">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem;">
+            <h2 id="rest-title-{{ r.id }}" class="restaurant-name">{{ r.name }}</h2>
+            <span class="badge badge-price" title="Price tier">{{ r.price_range }}</span>
+          </div>
+
+          <div class="restaurant-meta">
+            <span class="badge badge-cuisine">{{ r.cuisine }}</span>
+            <span>&bull;</span>
+            <span>{{ r.location }}</span>
+          </div>
+
+          <p class="restaurant-description">{{ r.description }}</p>
+
+          <ul class="restaurant-details-list">
+            <li>
+              <strong>Operating Hours:</strong>
+              <span>{{ r.opening_time }} - {{ r.closing_time }}</span>
+            </li>
+            <li>
+              <strong>Total Capacity:</strong>
+              <span>{{ r.capacity }} guest seats</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-footer-actions">
+          <a href="{{ url_for('restaurant_details', restaurant_id=r.id) }}" class="btn btn-secondary btn-block" id="details-btn-{{ r.id }}">Details</a>
+          <a href="{{ url_for('book', restaurant_id=r.id) }}" class="btn btn-primary btn-block" id="book-btn-{{ r.id }}">Reserve Table</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+{% else %}
+  <!-- Empty State -->
+  <div class="card" style="text-align: center; padding: 3rem 1.5rem; margin: 2rem 0;">
+    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;" aria-hidden="true">🔍</div>
+    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">No Restaurants Found</h3>
+    <p style="color: var(--color-text-muted); max-width: 480px; margin: 0 auto 1.5rem auto;">
+      We couldn't find any restaurants matching your search criteria. Try adjusting your keywords or clearing the cuisine filter.
+    </p>
+    <a href="{{ url_for('restaurants') }}" class="btn btn-primary">Reset Filters</a>
+  </div>
+{% endif %}
+
+{% endblock %}

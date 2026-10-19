@@ -1,0 +1,20 @@
+%% TableTime Restaurant Reservation System - Use Case Diagram
+graph LR
+    Customer((Customer / Diner))
+
+    subgraph TableTime System
+        UC1[Browse & Search Restaurants]
+        UC2[View Restaurant Details & Hours]
+        UC3[Make Table Reservation]
+        UC4[View Reservation by Reference]
+        UC5[Cancel Confirmed Reservation]
+        UC6[Check Slot Capacity & Availability]
+    end
+
+    Customer --> UC1
+    Customer --> UC2
+    Customer --> UC3
+    Customer --> UC4
+    Customer --> UC5
+
+    UC3 -.->|includes| UC6

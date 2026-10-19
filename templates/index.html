@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}TableTime - Book Tables at Top Restaurants{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section" aria-labelledby="hero-heading">
+  <h1 id="hero-heading" class="hero-title">Book Your Favorite Table in Seconds</h1>
+  <p class="hero-subtitle">
+    Explore top dining spots, check real-time seating availability, and secure your restaurant table instantly without phone calls.
+  </p>
+
+  <div class="hero-actions">
+    <a href="{{ url_for('restaurants') }}" class="btn btn-primary btn-lg" id="hero-browse-btn">Browse Restaurants</a>
+    <a href="{{ url_for('find_booking') }}" class="btn btn-secondary btn-lg" id="hero-find-btn">Find My Booking</a>
+  </div>
+
+  <!-- Quick Search & Filter Box -->
+  <div class="hero-search-box">
+    <form action="{{ url_for('restaurants') }}" method="GET" class="search-form-row" role="search" aria-label="Restaurant Quick Search">
+      <input
+        type="search"
+        name="search"
+        class="form-control"
+        placeholder="Search restaurant or location..."
+        aria-label="Search restaurant name or location"
+      >
+      <select name="cuisine" class="form-control" aria-label="Filter by cuisine">
+        <option value="">All Cuisines</option>
+        {% for c in cuisines %}
+          <option value="{{ c }}">{{ c }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-primary" id="hero-search-submit">Search</button>
+    </form>
+  </div>
+</section>
+
+<!-- Featured Restaurants Section -->
+<section aria-labelledby="featured-heading">
+  <div class="section-header">
+    <div>
+      <h2 id="featured-heading" class="section-title">Featured Restaurants</h2>
+      <p class="section-subtitle">Handpicked neighborhood favorites with guaranteed table reservations.</p>
+    </div>
+    <a href="{{ url_for('restaurants') }}" class="btn btn-secondary" id="view-all-restaurants-btn">View All Restaurants &rarr;</a>
+  </div>
+
+  <div class="restaurant-grid">
+    {% for r in featured %}
+      <article class="restaurant-card" aria-labelledby="rest-name-{{ r.id }}">
+        <div class="card-top">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem;">
+            <h3 id="rest-name-{{ r.id }}" class="restaurant-name">{{ r.name }}</h3>
+            <span class="badge badge-price" aria-label="Price range: {{ r.price_range }}">{{ r.price_range }}</span>
+          </div>
+
+          <div class="restaurant-meta">
+            <span class="badge badge-cuisine">{{ r.cuisine }}</span>
+            <span>&bull;</span>
+            <span>{{ r.location }}</span>
+          </div>
+
+          <p class="restaurant-description">{{ r.description }}</p>
+
+          <ul class="restaurant-details-list">
+            <li>
+              <strong>Hours:</strong>
+              <span>{{ r.opening_time }} - {{ r.closing_time }}</span>
+            </li>
+            <li>
+              <strong>Seating Capacity:</strong>
+              <span>{{ r.capacity }} guests max</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-footer-actions">
+          <a href="{{ url_for('restaurant_details', restaurant_id=r.id) }}" class="btn btn-secondary btn-block" id="view-details-{{ r.id }}">View Details</a>
+          <a href="{{ url_for('book', restaurant_id=r.id) }}" class="btn btn-primary btn-block" id="quick-book-{{ r.id }}">Reserve</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- System Value Section -->
+<section class="card" style="margin-top: 1rem; background-color: #ffffff;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; text-align: center;">
+    <div>
+      <div style="font-size: 1.75rem; margin-bottom: 0.5rem;" aria-hidden="true">📅</div>
+      <h3 style="font-size: 1.1rem; margin-bottom: 0.35rem;">Real-Time Availability</h3>
+      <p style="font-size: 0.875rem; color: var(--color-text-muted);">
+        Live slot checks prevent overbooking and guarantee your table reservation.
+      </p>
+    </div>
+    <div>
+      <div style="font-size: 1.75rem; margin-bottom: 0.5rem;" aria-hidden="true">⚡</div>
+      <h3 style="font-size: 1.1rem; margin-bottom: 0.35rem;">Instant Confirmation</h3>
+      <p style="font-size: 0.875rem; color: var(--color-text-muted);">
+        Get a unique booking reference code immediately upon submission.
+      </p>
+    </div>
+    <div>
+      <div style="font-size: 1.75rem; margin-bottom: 0.5rem;" aria-hidden="true">🔄</div>
+      <h3 style="font-size: 1.1rem; margin-bottom: 0.35rem;">Effortless Management</h3>
+      <p style="font-size: 0.875rem; color: var(--color-text-muted);">
+        Check booking details or cancel reservations anytime using your email and reference code.
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

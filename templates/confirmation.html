@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Reservation Confirmed: {{ reservation.booking_ref }} - TableTime{% endblock %}
+
+{% block content %}
+<article class="receipt-card" aria-labelledby="confirmation-heading">
+  <div class="confirmation-header">
+    <div class="confirmation-icon" aria-hidden="true">&#10003;</div>
+    <h1 id="confirmation-heading" style="font-size: 1.75rem; font-weight: 800; color: var(--color-text-main); margin-bottom: 0.25rem;">
+      Reservation Confirmed!
+    </h1>
+    <p style="color: var(--color-text-muted); font-size: 0.95rem;">
+      Your table has been reserved successfully. Please keep your booking reference handy.
+    </p>
+
+    <!-- Booking Reference Code Box -->
+    <div class="booking-ref-box">
+      <div class="booking-ref-label">Booking Reference Code</div>
+      <div class="booking-ref-code" id="confirmed-booking-ref">{{ reservation.booking_ref }}</div>
+    </div>
+  </div>
+
+  <!-- Reservation Receipt Details Table -->
+  <h2 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;">Reservation Summary</h2>
+  <table class="details-table">
+    <tbody>
+      <tr>
+        <th scope="row">Restaurant</th>
+        <td><strong>{{ reservation.restaurant_name }}</strong></td>
+      </tr>
+      <tr>
+        <th scope="row">Cuisine & Tier</th>
+        <td>{{ reservation.cuisine }} ({{ reservation.price_range }})</td>
+      </tr>
+      <tr>
+        <th scope="row">Location</th>
+        <td>{{ reservation.location }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Date of Visit</th>
+        <td><strong>{{ reservation.reservation_date }}</strong></td>
+      </tr>
+      <tr>
+        <th scope="row">Reserved Time</th>
+        <td><strong>{{ reservation.reservation_time }}</strong></td>
+      </tr>
+      <tr>
+        <th scope="row">Number of Guests</th>
+        <td>{{ reservation.guest_count }} guests</td>
+      </tr>
+      <tr>
+        <th scope="row">Primary Guest Name</th>
+        <td>{{ reservation.customer_name }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Contact Email</th>
+        <td>{{ reservation.email }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Contact Phone</th>
+        <td>{{ reservation.phone }}</td>
+      </tr>
+      {% if reservation.special_requests %}
+        <tr>
+          <th scope="row">Special Requests</th>
+          <td>{{ reservation.special_requests }}</td>
+        </tr>
+      {% endif %}
+      <tr>
+        <th scope="row">Booking Status</th>
+        <td>
+          <span class="badge badge-success">{{ reservation.status }}</span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Booked On</th>
+        <td>{{ reservation.created_at }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Important Arrival Notice -->
+  <div style="background-color: var(--color-bg-subtle); border-radius: var(--radius-sm); padding: 1rem; margin: 1.5rem 0; font-size: 0.875rem; color: var(--color-text-muted);">
+    <strong>Arrival Guidelines:</strong> Please arrive 5&ndash;10 minutes before your reserved time. Tables are held for up to 15 minutes past the booking slot. If your plans change, you can manage or cancel your reservation via the <em>Find My Booking</em> page using your reference code and email.
+  </div>
+
+  <!-- Receipt Actions -->
+  <div class="no-print" style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+    <button type="button" class="btn btn-secondary" onclick="window.print()" id="print-receipt-btn">
+      Print Receipt
+    </button>
+    <a href="{{ url_for('find_booking', ref=reservation.booking_ref, email=reservation.email) }}" class="btn btn-secondary" id="manage-booking-btn">
+      Manage This Booking
+    </a>
+    <a href="{{ url_for('restaurants') }}" class="btn btn-primary" id="return-restaurants-btn">
+      Browse More Restaurants
+    </a>
+  </div>
+</article>
+{% endblock %}

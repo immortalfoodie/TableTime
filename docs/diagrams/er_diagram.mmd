@@ -1,0 +1,30 @@
+%% TableTime Restaurant Reservation System - Entity Relationship Diagram
+erDiagram
+    RESTAURANTS ||--o{ RESERVATIONS : hosts
+
+    RESTAURANTS {
+        int id PK
+        string name
+        string cuisine
+        string location
+        string description
+        string opening_time
+        string closing_time
+        string price_range
+        int capacity
+    }
+
+    RESERVATIONS {
+        int id PK
+        string booking_ref UK
+        int restaurant_id FK
+        string customer_name
+        string email
+        string phone
+        string reservation_date
+        string reservation_time
+        int guest_count
+        string special_requests
+        string status
+        timestamp created_at
+    }

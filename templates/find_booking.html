@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Find & Manage Booking - TableTime{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <section class="section-header">
+    <div>
+      <h1 class="section-title">Find My Booking</h1>
+      <p class="section-subtitle">View your reservation details or cancel an active table booking.</p>
+    </div>
+  </section>
+
+  <!-- Lookup Form Card -->
+  <section class="card" style="margin-bottom: 2rem;">
+    <h2 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem;">Lookup Details</h2>
+
+    <form action="{{ url_for('find_booking') }}" method="POST" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label for="booking_ref">Booking Reference <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+          <input
+            type="text"
+            id="booking_ref"
+            name="booking_ref"
+            class="form-control"
+            placeholder="e.g. TT-A7B8C9"
+            value="{{ searched_ref }}"
+            required
+            style="text-transform: uppercase;"
+          >
+          <span class="form-helper">The code provided on your confirmation page.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="lookup_email">Email Address <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+          <input
+            type="email"
+            id="lookup_email"
+            name="email"
+            class="form-control"
+            placeholder="e.g. alex@example.com"
+            value="{{ searched_email }}"
+            required
+          >
+          <span class="form-helper">The email provided when making the reservation.</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.25rem;">
+        <button type="submit" class="btn btn-primary" id="lookup-submit-btn">Find Reservation</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Reservation Result Card -->
+  {% if reservation %}
+    <section class="card" aria-labelledby="booking-result-heading" style="border-top: 4px solid var(--color-primary);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+        <div>
+          <span style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-primary); font-weight: 700;">
+            Reservation Details
+          </span>
+          <h2 id="booking-result-heading" style="font-size: 1.5rem; font-weight: 800; margin-top: 0.2rem;">
+            {{ reservation.booking_ref }}
+          </h2>
+        </div>
+
+        <div>
+          {% if reservation.status == 'Confirmed' %}
+            <span class="badge badge-success" style="font-size: 0.9rem; padding: 0.35rem 0.75rem;">
+              &#10003; Confirmed
+            </span>
+          {% else %}
+            <span class="badge badge-danger" style="font-size: 0.9rem; padding: 0.35rem 0.75rem;">
+              &#10007; Cancelled
+            </span>
+          {% endif %}
+        </div>
+      </div>
+
+      <table class="details-table" style="margin-bottom: 1.5rem;">
+        <tbody>
+          <tr>
+            <th scope="row">Restaurant</th>
+            <td><strong>{{ reservation.restaurant_name }}</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">Location</th>
+            <td>{{ reservation.location }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Date of Visit</th>
+            <td>{{ reservation.reservation_date }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Reserved Time</th>
+            <td>{{ reservation.reservation_time }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Guests</th>
+            <td>{{ reservation.guest_count }} guests</td>
+          </tr>
+          <tr>
+            <th scope="row">Booked Under</th>
+            <td>{{ reservation.customer_name }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Contact Email</th>
+            <td>{{ reservation.email }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Contact Phone</th>
+            <td>{{ reservation.phone }}</td>
+          </tr>
+          {% if reservation.special_requests %}
+            <tr>
+              <th scope="row">Special Requests</th>
+              <td>{{ reservation.special_requests }}</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+
+      <!-- Action Section -->
+      {% if reservation.status == 'Confirmed' %}
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--color-border-subtle); padding-top: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+          <p style="font-size: 0.875rem; color: var(--color-text-muted);">
+            Need to cancel? You can cancel without any charges before your dining slot.
+          </p>
+          <button type="button" class="btn btn-danger" id="open-cancel-modal-btn" onclick="document.getElementById('cancel-modal').classList.add('active'); document.getElementById('cancel-modal').style.display='flex';">
+            Cancel Reservation
+          </button>
+        </div>
+      {% else %}
+        <div class="alert alert-error" style="margin-top: 1rem;">
+          <span>This reservation has been cancelled. Seating capacity has been released back to the restaurant.</span>
+        </div>
+      {% endif %}
+    </section>
+
+    <!-- Cancellation Confirmation Accessible Modal Dialog -->
+    <div class="modal-overlay" id="cancel-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-card">
+        <h3 id="modal-title" style="font-size: 1.25rem; font-weight: 700; color: var(--color-text-main); margin-bottom: 0.5rem;">
+          Confirm Cancellation
+        </h3>
+        <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem;">
+          Are you sure you want to cancel reservation <strong>{{ reservation.booking_ref }}</strong> at <strong>{{ reservation.restaurant_name }}</strong>?
+        </p>
+        <p style="font-size: 0.85rem; color: #dc2626; margin-bottom: 1.5rem;">
+          This action cannot be undone. You will need to make a new booking if you change your mind.
+        </p>
+
+        <form action="{{ url_for('cancel_booking', booking_ref=reservation.booking_ref) }}" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="email" value="{{ reservation.email }}">
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="close-modal-btn" onclick="document.getElementById('cancel-modal').classList.remove('active'); document.getElementById('cancel-modal').style.display='none';">Keep Reservation</button>
+            <button type="submit" class="btn btn-danger" id="confirm-cancel-btn">Yes, Cancel Booking</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  {% elif lookup_performed %}
+    <!-- Not Found State is rendered via flashed message -->
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}{{ restaurant.name }} - Details & Reservation | TableTime{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb Navigation -->
+<nav aria-label="Breadcrumb" style="margin-bottom: 1.5rem; font-size: 0.9rem;">
+  <a href="{{ url_for('restaurants') }}" style="color: var(--color-primary); text-decoration: none;">&larr; Back to all restaurants</a>
+</nav>
+
+<div class="detail-layout">
+  <!-- Left Column: Restaurant Overview & Time Slots -->
+  <div>
+    <article class="card" style="margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+        <h1 class="section-title" style="font-size: 1.85rem;">{{ restaurant.name }}</h1>
+        <span class="badge badge-price" style="font-size: 0.95rem;">{{ restaurant.price_range }}</span>
+      </div>
+
+      <div class="restaurant-meta" style="font-size: 0.95rem; margin-bottom: 1.25rem;">
+        <span class="badge badge-cuisine">{{ restaurant.cuisine }}</span>
+        <span>&bull;</span>
+        <span>{{ restaurant.location }}</span>
+      </div>
+
+      <h2 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem;">About the Restaurant</h2>
+      <p style="color: var(--color-text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
+        {{ restaurant.description }}
+      </p>
+
+      <h2 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem;">Bookable Time Slots</h2>
+      <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 0.75rem;">
+        Reservations are scheduled in 30-minute intervals during dining hours:
+      </p>
+
+      <div class="time-slot-grid" aria-label="Available daily dining slots">
+        {% for slot in time_slots %}
+          <div class="time-slot-pill">{{ slot }}</div>
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+
+  <!-- Right Column: Quick Booking Card & Key Information -->
+  <aside>
+    <div class="card" style="position: sticky; top: 90px;">
+      <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 1px solid var(--color-border-subtle); padding-bottom: 0.5rem;">
+        Quick Reservation
+      </h2>
+
+      <table class="details-table" style="margin-bottom: 1.5rem;">
+        <tbody>
+          <tr>
+            <th>Cuisine</th>
+            <td>{{ restaurant.cuisine }}</td>
+          </tr>
+          <tr>
+            <th>Location</th>
+            <td>{{ restaurant.location }}</td>
+          </tr>
+          <tr>
+            <th>Hours</th>
+            <td>{{ restaurant.opening_time }} &ndash; {{ restaurant.closing_time }}</td>
+          </tr>
+          <tr>
+            <th>Pricing</th>
+            <td>{{ restaurant.price_range }}</td>
+          </tr>
+          <tr>
+            <th>Capacity</th>
+            <td>{{ restaurant.capacity }} dining seats</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <a href="{{ url_for('book', restaurant_id=restaurant.id) }}" class="btn btn-primary btn-block btn-lg" id="proceed-to-book-btn">
+        Reserve a Table &rarr;
+      </a>
+
+      <p style="font-size: 0.8rem; color: var(--color-text-muted); text-align: center; margin-top: 0.75rem;">
+        Instant confirmation code &bull; No upfront fees
+      </p>
+    </div>
+  </aside>
+</div>
+{% endblock %}

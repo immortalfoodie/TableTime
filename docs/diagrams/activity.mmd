@@ -1,0 +1,23 @@
+%% TableTime Restaurant Reservation System - Activity Diagram
+flowchart TD
+    Start([Start]) --> Browse[Browse & Search Restaurants]
+    Browse --> Select[Select Restaurant]
+    Select --> ViewDetails[View Restaurant Details & Slots]
+    ViewDetails --> ClickBook[Click 'Reserve a Table']
+    ClickBook --> EnterDetails[Enter Contact & Dining Details]
+    EnterDetails --> SubmitForm[Submit Reservation Form]
+
+    SubmitForm --> ValidateInput{Validate Inputs<br/>Format, Date, Guests?}
+
+    ValidateInput -- Invalid / Past Date --> ShowFormError[Display Validation Error on Form]
+    ShowFormError --> EnterDetails
+
+    ValidateInput -- Valid --> CheckCapacity{Check Slot Capacity<br/>Inside SQLite Transaction}
+
+    CheckCapacity -- Insufficient Capacity --> ShowCapacityError[Display 'Slot Full / Limited Seats' Error]
+    ShowCapacityError --> EnterDetails
+
+    CheckCapacity -- Sufficient Seats --> SaveBooking[Insert Reservation & Generate Booking Reference]
+    SaveBooking --> CommitTx[Commit SQLite Transaction]
+    CommitTx --> ShowConfirmation[Display Booking Confirmation Page with Reference]
+    ShowConfirmation --> End([End])

@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Reserve Table at {{ restaurant.name }} - TableTime{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <!-- Back Link -->
+  <nav aria-label="Breadcrumb" style="margin-bottom: 1.25rem; font-size: 0.9rem;">
+    <a href="{{ url_for('restaurant_details', restaurant_id=restaurant.id) }}" style="color: var(--color-primary); text-decoration: none;">
+      &larr; Back to {{ restaurant.name }} Details
+    </a>
+  </nav>
+
+  <article class="card">
+    <div style="border-bottom: 1px solid var(--color-border-subtle); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+      <h1 class="section-title" style="font-size: 1.65rem;">Table Reservation</h1>
+      <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+        Reserving at <strong>{{ restaurant.name }}</strong> &bull; {{ restaurant.location }}
+      </p>
+    </div>
+
+    <!-- Live Capacity Status Tag -->
+    <div id="slot-capacity-indicator" style="font-size: 0.875rem; font-weight: 600; margin-bottom: 1.25rem; min-height: 1.25rem;" aria-live="polite"></div>
+
+    <form
+      action="{{ url_for('book', restaurant_id=restaurant.id) }}"
+      method="POST"
+      id="reservation-form"
+      data-restaurant-id="{{ restaurant.id }}"
+      novalidate
+    >
+      <!-- CSRF Token -->
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <!-- Customer Contact Details -->
+      <fieldset style="border: none; padding: 0; margin-bottom: 1.5rem;">
+        <legend style="font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; color: var(--color-text-main);">
+          1. Contact Information
+        </legend>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="customer_name">Full Name <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+          <input
+            type="text"
+            id="customer_name"
+            name="customer_name"
+            class="form-control"
+            placeholder="e.g. Alex Morgan"
+            value="{{ form_data.customer_name }}"
+            required
+            autocomplete="name"
+          >
+          <span class="form-helper">Enter the primary guest's full name.</span>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="email">Email Address <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              placeholder="alex@example.com"
+              value="{{ form_data.email }}"
+              required
+              autocomplete="email"
+            >
+            <span class="form-helper">Your confirmation & lookup reference will be tied to this email.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              class="form-control"
+              placeholder="+91 98765 43210"
+              value="{{ form_data.phone }}"
+              required
+              autocomplete="tel"
+            >
+            <span class="form-helper">Used by restaurant staff for reservation queries.</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Reservation Details -->
+      <fieldset style="border: none; padding: 0; margin-bottom: 1.5rem;">
+        <legend style="font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; color: var(--color-text-main);">
+          2. Dining Details
+        </legend>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="reservation_date">Date of Visit <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+            <input
+              type="date"
+              id="reservation_date"
+              name="reservation_date"
+              class="form-control"
+              value="{{ form_data.reservation_date }}"
+              min="{{ today_str }}"
+              required
+            >
+            <span class="form-helper">Reservations accepted for today or future dates.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="reservation_time">Time Slot <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+            <select id="reservation_time" name="reservation_time" class="form-control" required>
+              {% for slot in time_slots %}
+                <option value="{{ slot }}" {% if form_data.reservation_time == slot %}selected{% endif %}>
+                  {{ slot }}
+                </option>
+              {% endfor %}
+            </select>
+            <span class="form-helper">Operating hours: {{ restaurant.opening_time }} &ndash; {{ restaurant.closing_time }}</span>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label for="guest_count">Number of Guests <span style="color: #dc2626;" aria-hidden="true">*</span></label>
+          <input
+            type="number"
+            id="guest_count"
+            name="guest_count"
+            class="form-control"
+            value="{{ form_data.guest_count }}"
+            min="1"
+            max="{{ max_guests }}"
+            data-max-guests="{{ max_guests }}"
+            required
+            style="max-width: 200px;"
+          >
+          <span class="form-helper">Party size from 1 up to {{ max_guests }} guests online.</span>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label for="special_requests">Special Requests (Optional)</label>
+          <textarea
+            id="special_requests"
+            name="special_requests"
+            class="form-control"
+            rows="3"
+            placeholder="e.g. Window table requested, anniversary celebration, high chair needed, dietary allergies..."
+          >{{ form_data.special_requests }}</textarea>
+          <span class="form-helper">We will do our best to accommodate your seating preferences.</span>
+        </div>
+      </fieldset>
+
+      <!-- Form Action Buttons -->
+      <div style="display: flex; gap: 1rem; align-items: center; border-top: 1px solid var(--color-border-subtle); padding-top: 1.5rem;">
+        <button type="submit" class="btn btn-primary btn-lg" id="submit-booking-btn">Confirm Reservation</button>
+        <a href="{{ url_for('restaurant_details', restaurant_id=restaurant.id) }}" class="btn btn-secondary btn-lg" id="cancel-booking-form-btn">Cancel</a>
+      </div>
+    </form>
+  </article>
+</div>
+{% endblock %}

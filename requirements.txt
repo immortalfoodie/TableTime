@@ -1,0 +1,5 @@
+# TableTime - Restaurant Reservation System
+# Core requirements for running the application and running tests
+
+Flask>=3.0.0,<3.2.0
+pytest>=8.0.0

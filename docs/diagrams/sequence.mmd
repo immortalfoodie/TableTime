@@ -1,0 +1,47 @@
+%% TableTime Restaurant Reservation System - Sequence Diagram
+sequenceDiagram
+    autonumber
+    actor Customer as Customer
+    participant UI as Browser / Frontend
+    participant Flask as Flask Application (app.py)
+    participant DB as SQLite Database (tabletime.db)
+
+    Customer->>UI: Selects restaurant & clicks "Reserve"
+    UI->>Flask: GET /book/<restaurant_id>
+    Flask->>DB: Query restaurant details & opening hours
+    DB-->>Flask: Restaurant row (capacity, hours)
+    Flask-->>UI: Render booking_form.html with CSRF token
+
+    Customer->>UI: Fills name, email, phone, date, slot, guests
+    Customer->>UI: Clicks "Confirm Reservation"
+    UI->>Flask: POST /book/<restaurant_id> (form data + CSRF)
+
+    Note over Flask: Step 1: Validate CSRF & Session<br/>Step 2: Validate name, email, phone, date >= today, guests > 0
+
+    alt Validation Failed (e.g. past date or missing fields)
+        Flask-->>UI: Re-render booking_form.html with flash error messages
+        UI-->>Customer: Displays inline validation errors
+    else Inputs are Valid
+        Flask->>DB: BEGIN IMMEDIATE (Transaction Lock)
+        Flask->>DB: SELECT capacity FROM restaurants WHERE id = ?
+        DB-->>Flask: Restaurant capacity
+        Flask->>DB: SELECT SUM(guest_count) FROM reservations WHERE restaurant_id = ? AND date = ? AND time = ? AND status = 'Confirmed'
+        DB-->>Flask: Current booked guest count
+
+        alt Capacity Exceeded (Booked + Requested > Capacity)
+            Flask->>DB: ROLLBACK Transaction
+            Flask-->>UI: Re-render booking form with capacity error
+            UI-->>Customer: Displays "Slot full / Insufficient capacity" error
+        else Seats Available
+            Note over Flask: Generate unique booking reference (e.g. TT-A84B92)
+            Flask->>DB: INSERT INTO reservations (...) VALUES (...)
+            Flask->>DB: COMMIT Transaction
+            DB-->>Flask: Insert confirmed
+            Flask-->>UI: HTTP 302 Redirect to /confirmation/<booking_ref>
+            UI->>Flask: GET /confirmation/<booking_ref>
+            Flask->>DB: SELECT reservation joined with restaurant
+            DB-->>Flask: Reservation record
+            Flask-->>UI: Render confirmation.html (Receipt & Reference)
+            UI-->>Customer: Displays confirmed booking page with reference code
+        end
+    end
