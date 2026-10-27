@@ -158,6 +158,20 @@ tests/test_app.py::TableTimeTestCase::test_10_data_persistence_across_restart PA
 ============================= 10 passed in 1.65s ==============================
 ```
 
+### Option C: Selenium WebDriver Automation (SE Lab Experiment No. 8)
+```powershell
+python tests/selenium/run_selenium_tests.py
+```
+Or directly with `pytest`:
+```powershell
+pytest tests/selenium/ -v --junitxml=test_artifacts/reports/junit_report.xml --html=test_artifacts/reports/selenium_test_report.html --self-contained-html
+```
+Generated reports and genuine screenshots are saved to:
+- Interactive HTML Report: `test_artifacts/reports/selenium_test_report.html`
+- Machine-Readable JUnit XML: `test_artifacts/reports/junit_report.xml`
+- Test Matrix & Markdown Summary: `test_artifacts/reports/test_execution_report.md`
+- High-Resolution Genuine Screenshots: `test_artifacts/screenshots/` (16 screenshots)
+
 ---
 
 ## 🔒 7. Security, Usability & Concurrency Highlights
